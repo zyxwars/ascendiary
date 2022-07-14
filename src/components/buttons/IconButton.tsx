@@ -1,18 +1,25 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import * as colors from "../../constants/colors";
 
-export const IconButton = () => {
+interface Props {
+  // TODO: type as style
+  style: any;
+  onPress: () => void;
+}
+
+export const IconButton: React.FC<Props> = ({ children, style, onPress }) => {
   return (
     <TouchableOpacity
       style={{
         backgroundColor: colors.action,
-        borderRadius: 15,
-        padding: 10,
+        borderRadius: 16,
+        padding: 8,
+        ...style,
       }}
+      onPress={onPress}
     >
-      <Entypo name="plus" size={48} color="white" />
+      {children}
     </TouchableOpacity>
   );
 };

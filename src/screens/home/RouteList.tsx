@@ -1,16 +1,18 @@
+import { useNavigation } from "@react-navigation/native";
 import { Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { routesTable } from "../../db/models";
 
 export const RouteList = () => {
+  const navigation = useNavigation();
   const [routes, setRoutes] = useState<any[]>([]);
 
   const getRoutes = async () => {
     try {
-      const routes = await routesTable.find({});
+      const res = await routesTable.find({});
 
-      setRoutes(routes);
+      setRoutes(res.rows._array);
     } catch (error) {
       console.log(error);
     }
@@ -23,7 +25,12 @@ export const RouteList = () => {
   return (
     <View>
       {routes.map((route) => (
-        <Text key={route.id}>{route.name}</Text>
+        <TouchableOpacity
+          key={route.id}
+          onPress={() => navigation.navigate("Route", { id: route.id })}
+        >
+          <Text>{route.name}</Text>
+        </TouchableOpacity>
       ))}
     </View>
   );

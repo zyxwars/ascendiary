@@ -39,7 +39,7 @@ export default function App() {
             <Stack.Navigator>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="AddRoute" component={AddRoute} />
-              {/* <Stack.Screen name="Route" component={Route} /> */}
+              <Stack.Screen name="Route" component={Route} />
             </Stack.Navigator>
           </NavigationContainer>
         </ThemeProvider>

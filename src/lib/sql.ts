@@ -22,11 +22,11 @@ export class Database {
   };
 
   execute = (sqlStatement: string, args?: (string | number)[] | undefined) => {
-    return new Promise<any[]>((resolve, reject) => {
+    return new Promise<SQLite.SQLResultSet>((resolve, reject) => {
       this.db.transaction((tx) => {
-        tx.executeSql(sqlStatement, args, (_, { rows: { _array } }) =>
-          resolve(_array)
-        );
+        tx.executeSql(sqlStatement, args, (_, res) => {
+          resolve(res);
+        });
       }, reject);
     });
   };

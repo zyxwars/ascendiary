@@ -3,7 +3,7 @@ export const formatSelect = (
   conditions: string[],
   columns: string = "*"
 ) =>
-  `SELECT ${columns} FROM ${table}` +
+  `SELECT ${columns} FROM ${table} ` +
   (conditions.length > 0 ? `WHERE ${conditions.join(", ")};` : "");
 
 export const formatInsert = (table: string, fields: string[]) =>

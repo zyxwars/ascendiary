@@ -23,7 +23,9 @@ export const AddRoute = () => {
         size="lg"
         onPress={async () => {
           try {
-            const test = await routesTable.create({ name });
+            const res = await routesTable.create({ name });
+
+            navigation.navigate("Route", { id: res.insertId });
           } catch (error) {
             console.log(error);
           }

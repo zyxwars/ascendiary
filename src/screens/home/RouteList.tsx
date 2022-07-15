@@ -1,13 +1,30 @@
-import React, { useEffect } from "react";
+import { Text } from "@rneui/themed";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { findMany } from "../../db/transactions";
-import { getRoutes } from "../../store/route";
+import { routesTable } from "../../db/models";
 
 export const RouteList = () => {
+  const [routes, setRoutes] = useState<any[]>([]);
+
+  const getRoutes = async () => {
+    try {
+      const routes = await routesTable.find({});
+
+      setRoutes(routes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const routes = findMany("items");
-    console.log(routes);
+    getRoutes();
   }, []);
 
-  return <View></View>;
+  return (
+    <View>
+      {routes.map((route) => (
+        <Text key={route.id}>{route.name}</Text>
+      ))}
+    </View>
+  );
 };

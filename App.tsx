@@ -15,9 +15,10 @@ import { useEffect } from "react";
 import { Home } from "./src/screens/home/Home";
 import { AddRoute } from "./src/screens/AddRoute";
 import { Route } from "./src/screens/Route";
-import { clearDatabase, db, populateDatabase } from "./src/db/db";
 import { ThemeProvider } from "@rneui/themed";
 import { theme } from "./src/theme/theme";
+import { Table } from "./src/lib/sql";
+import { db } from "./src/db/db";
 
 type RootStackParamList = {
   Home: undefined;
@@ -27,12 +28,8 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// clearDatabase();
-
 export default function App() {
-  useEffect(() => {
-    populateDatabase();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <SafeAreaProvider>
@@ -42,7 +39,7 @@ export default function App() {
             <Stack.Navigator>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="AddRoute" component={AddRoute} />
-              <Stack.Screen name="Route" component={Route} />
+              {/* <Stack.Screen name="Route" component={Route} /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </ThemeProvider>

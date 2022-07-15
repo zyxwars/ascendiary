@@ -1,10 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/themed";
 import React, { useState } from "react";
-import { Text, TextInput, View } from "react-native";
-import { create } from "../db/transactions";
-import { createRoute } from "../store/route";
+import { View } from "react-native";
+import { routesTable } from "../db/models";
 
 export const AddRoute = () => {
   const navigation = useNavigation();
@@ -24,9 +22,11 @@ export const AddRoute = () => {
         title="Add Route"
         size="lg"
         onPress={async () => {
-          create("routes", "name", [name]);
-
-          // navigation.navigate("Route", { id: newRoute.id });
+          try {
+            const test = await routesTable.create({ name });
+          } catch (error) {
+            console.log(error);
+          }
         }}
       />
     </View>

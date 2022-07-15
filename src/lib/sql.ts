@@ -48,13 +48,17 @@ export class Table<Model extends { [key: string]: string }> {
     this.name = name;
     this.model = model;
 
-    // Create the table
     const fields = Object.keys(this.model);
+
+    // db.execute("PRAGMA table_info(name)").then((res) =>
+    //   console.log("table columns:", res)
+    // );
+
     db.execute(
       `CREATE TABLE IF NOT EXISTS ${
         this.name
       } (id integer primary key not null, ${fields.map(
-        (field) => field + this.model[field]
+        (field) => `${field} ${this.model[field]}`
       )});`
     );
   }

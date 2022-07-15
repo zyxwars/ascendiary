@@ -1,3 +1,4 @@
+import "react-native-get-random-values";
 import "@rneui/themed";
 
 declare module "@rneui/themed" {
@@ -6,7 +7,11 @@ declare module "@rneui/themed" {
   }
 }
 
-import "react-native-get-random-values";
+// Initialize database
+import { db } from "./src/db/db";
+// db.clearDatabase();
+import "./src/db/models";
+
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as StateProvider } from "jotai";
 import { NavigationContainer } from "@react-navigation/native";
@@ -17,8 +22,6 @@ import { AddRoute } from "./src/screens/AddRoute";
 import { Route } from "./src/screens/Route";
 import { ThemeProvider } from "@rneui/themed";
 import { theme } from "./src/theme/theme";
-import { Table } from "./src/lib/sql";
-import { db } from "./src/db/db";
 
 type RootStackParamList = {
   Home: undefined;

@@ -32,23 +32,27 @@ export class Database {
   };
 }
 
-type ModelObj<Model> = { [key in keyof Model]: any };
+type ColumnConstraints<Model> = { [key in keyof Model]: string };
 
-type OptionalWhere<Model> = Partial<ModelObj<Model>> & {
+type ModelWhere<Model> = Partial<ColumnConstraints<Model>> & {
   id?: number;
 };
 
-export class Table<Model extends { [key: string]: string }> {
+export class Table<Model extends { [key: string]: any }> {
   readonly name: string;
-  readonly model: Model;
+  readonly column_constraints: ColumnConstraints<Model>;
   readonly db: Database;
 
-  constructor(db: Database, name: string, model: Model) {
+  constructor(
+    db: Database,
+    name: string,
+    column_constraints: ColumnConstraints<Model>
+  ) {
     this.db = db;
     this.name = name;
-    this.model = model;
+    this.column_constraints = column_constraints;
 
-    const fields = Object.keys(this.model);
+    const columns = Object.keys(this.column_constraints);
 
     // db.execute("PRAGMA table_info(name)").then((res) =>
     //   console.log("table columns:", res)
@@ -57,31 +61,31 @@ export class Table<Model extends { [key: string]: string }> {
     db.execute(
       `CREATE TABLE IF NOT EXISTS ${
         this.name
-      } (id integer primary key not null, ${fields.map(
-        (field) => `${field} ${this.model[field]}`
+      } (id integer primary key not null, ${columns.map(
+        (column) => `${column} ${this.column_constraints[column]}`
       )});`
     );
   }
 
-  async find(where: OptionalWhere<Model>) {
-    const fields = Object.keys(where);
+  async find(where: ModelWhere<Model>) {
+    const columns = Object.keys(where);
 
-    const conditions = fields.map((field) => `${field} = ${where[field]}`);
+    const conditions = columns.map((column) => `${column} = ${where[column]}`);
 
     return this.db.execute(formatSelect(this.name, conditions));
   }
 
-  create(obj: ModelObj<Model>) {
-    const fields = Object.keys(obj);
+  create(obj: Model) {
+    const columns = Object.keys(obj);
     const values = Object.values(obj);
 
-    return this.db.execute(formatInsert(this.name, fields), values);
+    return this.db.execute(formatInsert(this.name, columns), values);
   }
 
-  delete(where: OptionalWhere<Model>) {
-    const fields = Object.keys(where);
+  delete(where: ModelWhere<Model>) {
+    const columns = Object.keys(where);
 
-    const conditions = fields.map((field) => `${field} = ${where[field]}`);
+    const conditions = columns.map((column) => `${column} = ${where[column]}`);
 
     console.log(formatDelete(this.name, conditions));
   }

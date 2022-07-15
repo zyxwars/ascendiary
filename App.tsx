@@ -13,7 +13,7 @@ import { db } from "./src/db/db";
 import "./src/db/models";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Provider as StateProvider } from "jotai";
+import { atom, Provider as StateProvider, useAtom } from "jotai";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
@@ -32,8 +32,6 @@ type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  useEffect(() => {}, []);
-
   return (
     <SafeAreaProvider>
       <StateProvider>

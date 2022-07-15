@@ -1,6 +1,9 @@
 import { Table } from "../lib/sql";
 import { db } from "./db";
 
-export const routesTable = new Table(db, "routes", {
+export type routesModel = {
+  name: string;
+};
+export const routesTable = new Table<routesModel>(db, "routes", {
   name: "string not null",
 });

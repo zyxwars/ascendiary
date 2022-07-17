@@ -7,6 +7,7 @@ import { routesModel, routesTable } from "../db/models";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
 import { dialogAtom } from "../components/GlobalDialog";
+import * as MediaLibrary from "expo-media-library";
 
 const routeAtom = atom<routesModel | null>(null);
 
@@ -39,18 +40,22 @@ export const Route = () => {
       <Button
         title="Upload thumbnail"
         onPress={async () => {
-          const permission = await ImagePicker.getCameraPermissionsAsync();
-          console.log(permission);
+          const cameraPermission =
+            await ImagePicker.getCameraPermissionsAsync();
+          const storagePermission = await MediaLibrary.getPermissionsAsync();
 
-          if (!permission.granted && permission.canAskAgain)
+          if (!cameraPermission.granted && cameraPermission.canAskAgain)
             await ImagePicker.requestCameraPermissionsAsync();
 
-          // TODO: test this outside of expo
-          if (!permission.granted)
+          if (!storagePermission.granted && storagePermission.canAskAgain)
+            await MediaLibrary.requestPermissionsAsync();
+
+          // TODO: test this outside of expo for all permissions
+          if (!cameraPermission.granted)
             return setDialogData({
               isVisible: true,
               title: "No permission",
-              message: "Camera permission needed",
+              message: "Camera and media permissions needed",
               cbTitle: "Go to settings",
               callback: Linking.openSettings,
             });
@@ -59,9 +64,31 @@ export const Route = () => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
           });
 
-          // TODO: Store the image in library
+          if (res.cancelled) return;
 
-          console.log(res);
+          const asset = await MediaLibrary.createAssetAsync(res.uri);
+
+          let album = await MediaLibrary.getAlbumAsync("Ascendiary");
+
+          try {
+            if (!album)
+              return await MediaLibrary.createAlbumAsync(
+                "Ascendiary",
+                asset,
+                false
+              );
+
+            await MediaLibrary.addAssetsToAlbumAsync(asset, album, false);
+          } catch (error) {
+            setDialogData({
+              isVisible: true,
+              title: "Creation error",
+              message:
+                "Creation was cancelled, but the photo is still in storage",
+              cbTitle: "Delete photo",
+              callback: () => MediaLibrary.deleteAssetsAsync(asset),
+            });
+          }
         }}
       />
     </View>

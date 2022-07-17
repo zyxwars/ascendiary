@@ -23,7 +23,10 @@ export const GlobalDialog = () => {
       <Dialog.Actions>
         <Dialog.Button
           title={dialogData.cbTitle}
-          onPress={dialogData.callback}
+          onPress={() => {
+            dialogData.callback;
+            setDialogData((prev) => ({ ...prev, isVisible: false }));
+          }}
         />
         <Dialog.Button title="Close" onPress={handleClose} />
       </Dialog.Actions>

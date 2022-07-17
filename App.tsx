@@ -22,6 +22,7 @@ import { AddRoute } from "./src/screens/AddRoute";
 import { Route } from "./src/screens/Route";
 import { ThemeProvider } from "@rneui/themed";
 import { theme } from "./src/theme/theme";
+import { GlobalDialog } from "./src/components/GlobalDialog";
 
 type RootStackParamList = {
   Home: undefined;
@@ -36,6 +37,7 @@ export default function App() {
     <SafeAreaProvider>
       <StateProvider>
         <ThemeProvider theme={theme}>
+          <GlobalDialog />
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name="Home" component={Home} />

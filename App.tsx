@@ -9,7 +9,6 @@ declare module "@rneui/themed" {
 
 // Initialize database
 import { db } from "./src/db/db";
-// db.clearDatabase();
 import "./src/db/models";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -31,6 +30,8 @@ type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// db.clearDatabase();
 
 export default function App() {
   return (

@@ -3,7 +3,9 @@ import { db } from "./db";
 
 export type routesModel = {
   name: string;
+  thumbnail?: string;
 };
 export const routesTable = new Table<routesModel>(db, "routes", {
-  name: "string not null",
+  name: "text not null",
+  thumbnail: "text",
 });

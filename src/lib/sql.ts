@@ -1,5 +1,22 @@
 import * as SQLite from "expo-sqlite";
-import { formatSelect, formatInsert, formatDelete } from "./formatters";
+import {
+  formatSelect,
+  formatInsert,
+  formatDelete,
+  formatUpdate,
+} from "./formatters";
+
+const filterUndefinedValues = (obj: Record<any, any>) => {
+  const copy = { ...obj };
+
+  Object.keys(copy).forEach((key) => {
+    if (copy[key] === undefined) {
+      delete copy[key];
+    }
+  });
+
+  return copy;
+};
 
 export class Database {
   private db: SQLite.WebSQLDatabase;
@@ -34,11 +51,11 @@ export class Database {
 
 type ColumnConstraints<Model> = { [key in keyof Model]: string };
 
-type ModelWhere<Model> = Partial<ColumnConstraints<Model>> & {
+type ModelPartialWithId<Model> = Partial<ColumnConstraints<Model>> & {
   id?: number;
 };
 
-export class Table<Model extends { [key: string]: any }> {
+export class Table<Model extends { [key: string]: string | number }> {
   readonly name: string;
   readonly column_constraints: ColumnConstraints<Model>;
   readonly db: Database;
@@ -67,26 +84,48 @@ export class Table<Model extends { [key: string]: any }> {
     );
   }
 
-  async find(where: ModelWhere<Model>) {
-    const columns = Object.keys(where);
+  find(where: ModelPartialWithId<Model>) {
+    const cleanedWhere = filterUndefinedValues(where);
 
-    const conditions = columns.map((column) => `${column} = ${where[column]}`);
+    const conditionCols = Object.keys(cleanedWhere);
+    const conditions = Object.values(cleanedWhere);
 
-    return this.db.execute(formatSelect(this.name, conditions));
+    return this.db.execute(formatSelect(this.name, conditionCols), conditions);
   }
 
   create(obj: Model) {
-    const columns = Object.keys(obj);
-    const values = Object.values(obj);
+    const cleanedObj = filterUndefinedValues(obj);
+
+    const columns = Object.keys(cleanedObj);
+    const values = Object.values(cleanedObj);
 
     return this.db.execute(formatInsert(this.name, columns), values);
   }
 
-  delete(where: ModelWhere<Model>) {
-    const columns = Object.keys(where);
+  update(where: ModelPartialWithId<Model>, obj: ModelPartialWithId<Model>) {
+    const cleanedWhere = filterUndefinedValues(where);
+    const cleanedObj = filterUndefinedValues(obj);
 
-    const conditions = columns.map((column) => `${column} = ${where[column]}`);
+    const conditionCols = Object.keys(where);
+    const setCols = Object.keys(obj);
 
-    console.log(formatDelete(this.name, conditions));
+    const values = [
+      ...Object.values(cleanedObj),
+      ...Object.values(cleanedWhere),
+    ];
+
+    return this.db.execute(
+      formatUpdate(this.name, setCols, conditionCols),
+      values
+    );
+  }
+
+  delete(where: ModelPartialWithId<Model>) {
+    const cleanedWhere = filterUndefinedValues(where);
+
+    const conditionCols = Object.keys(cleanedWhere);
+    const conditions = Object.values(cleanedWhere);
+
+    return this.db.execute(formatDelete(this.name, conditionCols), conditions);
   }
 }

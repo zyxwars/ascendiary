@@ -1,15 +1,26 @@
+const formatForValues = (cols: string[]) => cols.map((col) => `${col} = (?)`);
+
 export const formatSelect = (
   table: string,
-  conditions: string[],
+  conditionCols: string[],
   columns: string = "*"
 ) =>
   `SELECT ${columns} FROM ${table} ` +
-  (conditions.length > 0 ? `WHERE ${conditions.join(", ")};` : "");
+  (conditionCols.length > 0 ? `WHERE ${formatForValues(conditionCols)}` : "");
 
 export const formatInsert = (table: string, fields: string[]) =>
   `INSERT INTO ${table} (${fields.join(", ")}) VALUES (${fields
     .map(() => "?")
     .join(", ")});`;
 
-export const formatDelete = (table: string, conditions: string[]) =>
-  `DELETE FROM ${table} WHERE ${conditions.join(", ")};`;
+export const formatUpdate = (
+  table: string,
+  setCols: string[],
+  conditionCols: string[]
+) =>
+  `UPDATE ${table} SET ${formatForValues(setCols)} WHERE ${formatForValues(
+    conditionCols
+  )};`;
+
+export const formatDelete = (table: string, conditionCols: string[]) =>
+  `DELETE FROM ${table} WHERE ${formatForValues(conditionCols)};`;

@@ -2,7 +2,7 @@ import { Link, useRoute } from "@react-navigation/native";
 import { Button, LinearProgress } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, Text, View, Image } from "react-native";
 import { routesModel, routesTable } from "../db/models";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
@@ -24,6 +24,8 @@ export const Route = () => {
 
       if (res.rows.length < 1) return alert("Route not found in the database");
 
+      console.log(res);
+
       setRouteData(res.rows._array[0]);
     } catch (error) {
       console.log(error);
@@ -36,7 +38,24 @@ export const Route = () => {
 
   return (
     <View>
-      {routeData && <Text>{routeData.name}</Text>}
+      {routeData && (
+        <View>
+          <Text>{routeData.name}</Text>
+
+          {routeData?.thumbnail ? (
+            //TODO: Fix image
+            <Image
+              width={100}
+              height={100}
+              source={{
+                uri: routeData.thumbnail,
+              }}
+            />
+          ) : (
+            <Text>No thumbnail</Text>
+          )}
+        </View>
+      )}
       <Button
         title="Upload thumbnail"
         onPress={async () => {
@@ -72,13 +91,13 @@ export const Route = () => {
 
           try {
             if (!album)
-              return await MediaLibrary.createAlbumAsync(
-                "Ascendiary",
-                asset,
-                false
-              );
+              await MediaLibrary.createAlbumAsync("Ascendiary", asset, false);
+            else await MediaLibrary.addAssetsToAlbumAsync(asset, album, false);
 
-            await MediaLibrary.addAssetsToAlbumAsync(asset, album, false);
+            // TODO: error handle this
+            routesTable
+              .update({ id }, { thumbnail: asset.uri })
+              .catch((err) => console.log(err));
           } catch (error) {
             setDialogData({
               isVisible: true,

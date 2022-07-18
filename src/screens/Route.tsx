@@ -1,8 +1,8 @@
 import { Link, useRoute } from "@react-navigation/native";
-import { Button, LinearProgress } from "@rneui/themed";
+import { Button, LinearProgress, Image } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect } from "react";
-import { Alert, Text, View, Image } from "react-native";
+import { Alert, Text, View } from "react-native";
 import { routesModel, routesTable } from "../db/models";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
@@ -24,8 +24,6 @@ export const Route = () => {
 
       if (res.rows.length < 1) return alert("Route not found in the database");
 
-      console.log(res);
-
       setRouteData(res.rows._array[0]);
     } catch (error) {
       console.log(error);
@@ -37,7 +35,7 @@ export const Route = () => {
   }, []);
 
   return (
-    <View>
+    <>
       {routeData && (
         <View>
           <Text>{routeData.name}</Text>
@@ -45,8 +43,7 @@ export const Route = () => {
           {routeData?.thumbnail ? (
             //TODO: Fix image
             <Image
-              width={100}
-              height={100}
+              style={{ width: 100, height: 100 }}
               source={{
                 uri: routeData.thumbnail,
               }}
@@ -89,27 +86,45 @@ export const Route = () => {
 
           let album = await MediaLibrary.getAlbumAsync("Ascendiary");
 
-          try {
-            if (!album)
-              await MediaLibrary.createAlbumAsync("Ascendiary", asset, false);
-            else await MediaLibrary.addAssetsToAlbumAsync(asset, album, false);
+          if (!album)
+            album = await MediaLibrary.createAlbumAsync("Ascendiary", asset);
+          else await MediaLibrary.addAssetsToAlbumAsync(asset, album);
 
-            // TODO: error handle this
-            routesTable
-              .update({ id }, { thumbnail: asset.uri })
-              .catch((err) => console.log(err));
-          } catch (error) {
-            setDialogData({
-              isVisible: true,
-              title: "Creation error",
-              message:
-                "Creation was cancelled, but the photo is still in storage",
-              cbTitle: "Delete photo",
-              callback: () => MediaLibrary.deleteAssetsAsync(asset),
-            });
-          }
+          const assets = await MediaLibrary.getAssetsAsync({
+            album,
+            first: 1,
+            sortBy: MediaLibrary.SortBy.creationTime,
+          });
+
+          const movedImage = assets.assets[0];
+
+          routesTable.update({ id }, { thumbnail: movedImage.uri });
+
+          // This triggers allow to modify image
+          // https://github.com/expo/expo/issues/16694
+          await MediaLibrary.deleteAssetsAsync(asset);
+
+          // try {
+          //   // TODO: error handle this
+          //   if (!album)
+          //     await MediaLibrary.createAlbumAsync("Ascendiary", asset);
+          //   else await MediaLibrary.addAssetsToAlbumAsync(asset, album);
+
+          //   routesTable
+          //     .update({ id }, { thumbnail: asset.uri })
+          //     .catch((err) => console.log(err));
+          // } catch (error) {
+          //   setDialogData({
+          //     isVisible: true,
+          //     title: "Creation error",
+          //     message:
+          //       "Creation was cancelled, but the photo is still in storage",
+          //     cbTitle: "Delete photo",
+          //     callback: () => MediaLibrary.deleteAssetsAsync(asset),
+          //   });
+          // }
         }}
       />
-    </View>
+    </>
   );
 };

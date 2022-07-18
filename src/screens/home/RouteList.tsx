@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text } from "@rneui/themed";
+import { Image, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { routesTable } from "../../db/models";
@@ -30,6 +30,12 @@ export const RouteList = () => {
           onPress={() => navigation.navigate("Route", { id: route.id })}
         >
           <Text>{route.name}</Text>
+          {route?.thumbnail && (
+            <Image
+              source={{ uri: route.thumbnail }}
+              style={{ width: 100, height: 100 }}
+            />
+          )}
         </TouchableOpacity>
       ))}
     </View>

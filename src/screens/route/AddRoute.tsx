@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/themed";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { routesTable } from "../db/models";
+import { routesTable } from "../../db/models";
 
 export const AddRoute = () => {
   const navigation = useNavigation();

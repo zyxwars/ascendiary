@@ -1,13 +1,15 @@
-import { Link, useRoute } from "@react-navigation/native";
-import { Button, LinearProgress, Image } from "@rneui/themed";
+import { Link, useRoute, useTheme } from "@react-navigation/native";
+import { Button, LinearProgress, Image, Text } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect } from "react";
-import { Alert, Text, View } from "react-native";
-import { routesModel, routesTable } from "../db/models";
+import { Alert, ImageBackground, View } from "react-native";
+import { routesModel, routesTable } from "../../db/models";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
-import { dialogAtom } from "../components/GlobalDialog";
+import { dialogAtom } from "../../components/GlobalDialog";
 import * as MediaLibrary from "expo-media-library";
+import * as S from "./styled";
+import { thumbnailPlaceholder } from "../../constants";
 
 const routeAtom = atom<routesModel | null>(null);
 
@@ -37,22 +39,18 @@ export const Route = () => {
   return (
     <>
       {routeData && (
-        <View>
-          <Text>{routeData.name}</Text>
-
-          {routeData?.thumbnail ? (
-            //TODO: Fix image
-            <Image
-              style={{ width: 100, height: 100 }}
-              source={{
-                uri: routeData.thumbnail,
-              }}
-            />
-          ) : (
-            <Text>No thumbnail</Text>
-          )}
-        </View>
+        <S.HeaderBackground
+          source={
+            routeData?.thumbnail
+              ? { uri: routeData.thumbnail }
+              : thumbnailPlaceholder
+          }
+        >
+          <Text h2>{routeData.name}</Text>
+        </S.HeaderBackground>
       )}
+      <S.HeaderDivider></S.HeaderDivider>
+
       <Button
         title="Upload thumbnail"
         onPress={async () => {

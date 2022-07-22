@@ -1,15 +1,24 @@
 import { Link, useRoute, useTheme } from "@react-navigation/native";
-import { Button, LinearProgress, Image, Text } from "@rneui/themed";
+import { Button, LinearProgress, Image, Text, Input, FAB } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect } from "react";
-import { Alert, ImageBackground, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  ImageBackground,
+  TextInput,
+  View,
+} from "react-native";
 import { routesModel, routesTable } from "../../db/models";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
 import { dialogAtom } from "../../components/GlobalDialog";
 import * as MediaLibrary from "expo-media-library";
 import * as S from "./styled";
+import * as GS from "../../components/globalStyled";
+
 import { thumbnailPlaceholder } from "../../constants";
+import { Editable } from "../../components/Editable";
 
 const routeAtom = atom<routesModel | null>(null);
 
@@ -46,12 +55,31 @@ export const Route = () => {
               : thumbnailPlaceholder
           }
         >
-          <Text h2>{routeData.name}</Text>
+          <Editable
+            readable={<Text h2>{routeData.name}</Text>}
+            editable={
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                {/* <Input style={{ width: 10 }} /> */}
+                <FAB icon={{ name: "check", color: "white", type: "entypo" }} />
+                <FAB icon={{ name: "cross", color: "white", type: "entypo" }} />
+              </View>
+            }
+          />
         </S.HeaderBackground>
       )}
       <S.HeaderDivider></S.HeaderDivider>
+      <GS.MainContainer>
+        <Text h4>Media</Text>
+        <Text h4>Notes</Text>
+        <GS.TextArea
+          multiline={true}
+          numberOfLines={5}
+          textAlignVertical="top"
+          placeholder="Route notes"
+        />
+      </GS.MainContainer>
 
-      <Button
+      {/* <Button
         title="Upload thumbnail"
         onPress={async () => {
           const cameraPermission =
@@ -122,7 +150,7 @@ export const Route = () => {
           //   });
           // }
         }}
-      />
+      /> */}
     </>
   );
 };

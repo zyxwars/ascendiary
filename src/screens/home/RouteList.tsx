@@ -3,6 +3,8 @@ import { Image, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { routesTable } from "../../db/models";
+import { RouteTile } from "./RouteTile";
+import * as S from "./styled";
 
 export const RouteList = () => {
   const navigation = useNavigation();
@@ -23,21 +25,15 @@ export const RouteList = () => {
   }, []);
 
   return (
-    <View>
+    <S.RouteTilesContainer>
       {routes.map((route) => (
         <TouchableOpacity
           key={route.id}
           onPress={() => navigation.navigate("Route", { id: route.id })}
         >
-          <Text>{route.name}</Text>
-          {route?.thumbnail && (
-            <Image
-              source={{ uri: route.thumbnail }}
-              style={{ width: 100, height: 100 }}
-            />
-          )}
+          <RouteTile route={route} />
         </TouchableOpacity>
       ))}
-    </View>
+    </S.RouteTilesContainer>
   );
 };

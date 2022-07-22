@@ -58,16 +58,19 @@ type ModelPartialWithId<Model> = Partial<ColumnConstraints<Model>> & {
 export class Table<Model extends { [key: string]: string | number }> {
   readonly name: string;
   readonly column_constraints: ColumnConstraints<Model>;
+  readonly extra_constraints: string;
   readonly db: Database;
 
   constructor(
     db: Database,
     name: string,
-    column_constraints: ColumnConstraints<Model>
+    column_constraints: ColumnConstraints<Model>,
+    extra_constraints: string = ""
   ) {
     this.db = db;
     this.name = name;
     this.column_constraints = column_constraints;
+    this.extra_constraints = extra_constraints;
 
     const columns = Object.keys(this.column_constraints);
 
@@ -80,7 +83,7 @@ export class Table<Model extends { [key: string]: string | number }> {
         this.name
       } (id integer primary key not null, ${columns.map(
         (column) => `${column} ${this.column_constraints[column]}`
-      )});`
+      )} ${extra_constraints ? `, ${extra_constraints}` : ""});`
     );
   }
 

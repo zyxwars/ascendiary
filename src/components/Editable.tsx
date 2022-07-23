@@ -1,28 +1,32 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 
+export interface EditableProps {
+  readable: React.ReactNode;
+  editable: React.ReactNode;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
+}
+
 export const Editable = ({
   readable,
   editable,
-}: {
-  readable: React.ReactNode;
-  editable: React.ReactNode;
-}) => {
-  const [showReadable, setShowReadable] = useState(true);
-
+  isEditing,
+  setIsEditing,
+}: EditableProps) => {
   return (
-    <View>
-      {showReadable ? (
+    <>
+      {isEditing ? (
+        <>{editable}</>
+      ) : (
         <TouchableOpacity
           onPress={() => {
-            setShowReadable(false);
+            setIsEditing(true);
           }}
         >
           {readable}
         </TouchableOpacity>
-      ) : (
-        <>{editable}</>
       )}
-    </View>
+    </>
   );
 };

@@ -20,12 +20,14 @@ import { AddRoute } from "./src/screens/route/AddRoute";
 import { Route } from "./src/screens/route/Route";
 import { ThemeProvider } from "@rneui/themed";
 import { theme } from "./src/theme/theme";
-import { GlobalDialog } from "./src/components/GlobalDialog";
+import { EditRoute } from "./src/screens/route/EditRoute";
+import { routesModel } from "./src/db/models";
 
 type RootStackParamList = {
   Home: undefined;
   AddRoute: undefined;
   Route: { id: number };
+  EditRoute: routesModel;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,12 +39,12 @@ export default function App() {
     <JotaiProvider>
       <ThemeProvider theme={theme}>
         <SafeAreaProvider>
-          <GlobalDialog />
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="AddRoute" component={AddRoute} />
               <Stack.Screen name="Route" component={Route} />
+              <Stack.Screen name="EditRoute" component={EditRoute} />
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaProvider>

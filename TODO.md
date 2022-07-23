@@ -1,7 +1,12 @@
-# Quick fixes:
+# Primary
 
-- Refresh page after returning to it
 - Fix navigation typing - https://reactnavigation.org/docs/typescript/
+- Refresh page after returning to it
+- Add route edit and delete
+- Finish editable component > scrap for now and make an edit page for every component
+- Use alert instead of global dialog
+
+# Quick fixes:
 
 # Long-term:
 

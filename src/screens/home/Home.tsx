@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Button, FAB, useTheme } from "@rneui/themed";
 import { db } from "../../db/db";

@@ -1,7 +1,12 @@
-import { Link, useRoute, useTheme } from "@react-navigation/native";
+import {
+  Link,
+  useNavigation,
+  useRoute,
+  useTheme,
+} from "@react-navigation/native";
 import { Button, LinearProgress, Image, Text, Input, FAB } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -12,20 +17,19 @@ import {
 import { routesModel, routesTable } from "../../db/models";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
-import { dialogAtom } from "../../components/GlobalDialog";
 import * as MediaLibrary from "expo-media-library";
 import * as S from "./styled";
-import * as GS from "../../components/globalStyled";
 
 import { thumbnailPlaceholder } from "../../constants";
 import { Editable } from "../../components/Editable";
+import { MainContainer, TextArea } from "../../components/globalStyled";
 
 const routeAtom = atom<routesModel | null>(null);
 
 export const Route = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const { id } = route.params;
-  const setDialogData = useSetAtom(dialogAtom);
 
   const [routeData, setRouteData] = useAtom(routeAtom);
 
@@ -35,7 +39,8 @@ export const Route = () => {
 
       if (res.rows.length < 1) return alert("Route not found in the database");
 
-      setRouteData(res.rows._array[0]);
+      const data = res.rows._array[0];
+      setRouteData(data);
     } catch (error) {
       console.log(error);
     }
@@ -55,29 +60,29 @@ export const Route = () => {
               : thumbnailPlaceholder
           }
         >
-          <Editable
-            readable={<Text h2>{routeData.name}</Text>}
-            editable={
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                {/* <Input style={{ width: 10 }} /> */}
-                <FAB icon={{ name: "check", color: "white", type: "entypo" }} />
-                <FAB icon={{ name: "cross", color: "white", type: "entypo" }} />
-              </View>
-            }
-          />
+          <Text h2>{routeData.name}</Text>
         </S.HeaderBackground>
       )}
       <S.HeaderDivider></S.HeaderDivider>
-      <GS.MainContainer>
+      <MainContainer>
         <Text h4>Media</Text>
         <Text h4>Notes</Text>
-        <GS.TextArea
+        <TextArea
           multiline={true}
           numberOfLines={5}
           textAlignVertical="top"
           placeholder="Route notes"
         />
-      </GS.MainContainer>
+      </MainContainer>
+
+      <FAB
+        size="large"
+        placement="right"
+        icon={{ name: "cog", color: "white", type: "entypo" }}
+        onPress={() => {
+          navigation.navigate("EditRoute", routeData);
+        }}
+      />
 
       {/* <Button
         title="Upload thumbnail"

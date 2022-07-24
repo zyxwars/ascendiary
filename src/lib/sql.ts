@@ -74,7 +74,7 @@ export class Table<Model extends { [key: string]: string | number }> {
 
     const columns = Object.keys(this.column_constraints);
 
-    // db.execute("PRAGMA table_info(name)").then((res) =>
+    // db.execute(`PRAGMA table_info(${this.name})`).then((res) =>
     //   console.log("table columns:", res)
     // );
 
@@ -83,7 +83,7 @@ export class Table<Model extends { [key: string]: string | number }> {
         this.name
       } (id integer primary key not null, ${columns.map(
         (column) => `${column} ${this.column_constraints[column]}`
-      )} ${extra_constraints ? `, ${extra_constraints}` : ""});`
+      )}${extra_constraints ? `, ${extra_constraints}` : ""});`
     );
   }
 

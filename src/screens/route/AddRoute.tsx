@@ -1,15 +1,27 @@
 import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/themed";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
-import { routesTable } from "../../db/models";
+import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
 
 export const AddRoute = () => {
   const navigation = useNavigation();
 
-  const [name, setName] = useState("");
-  const [crag, setCrag] = useState("");
+  const [routeName, setName] = useState("");
+  const [cragName, setCrag] = useState("");
+  const [existingCrags, setExistingCrags] = useState<withId<cragsModel>[]>([]);
+  const existingCragNames = existingCrags.map((crag) => crag.name);
+
+  const getCrags = async () => {
+    const res = await cragsTable.find({});
+    const data = res.rows._array;
+    setExistingCrags(data);
+  };
+
+  useEffect(() => {
+    getCrags();
+  }, []);
 
   return (
     <View
@@ -18,11 +30,15 @@ export const AddRoute = () => {
         padding: 8,
       }}
     >
-      <Input placeholder="Route name" onChangeText={setName} value={name} />
+      <Input
+        placeholder="Route name"
+        onChangeText={setName}
+        value={routeName}
+      />
 
       <AutoComplete
-        words={["hello", "hi", "123"]}
-        value={crag}
+        words={existingCragNames}
+        value={cragName}
         setValue={setCrag}
         inputProps={{ placeholder: "Crag name" }}
       />
@@ -32,7 +48,20 @@ export const AddRoute = () => {
         size="lg"
         onPress={async () => {
           try {
-            const res = await routesTable.create({ name });
+            let cragId: number;
+
+            if (!existingCragNames.includes(cragName)) {
+              const res = await cragsTable.create({ name: cragName });
+
+              cragId = res.insertId as number;
+            } else
+              cragId = existingCrags.filter((crag) => crag.name === cragName)[0]
+                .id;
+
+            const res = await routesTable.create({
+              name: routeName,
+              cragid: cragId,
+            });
 
             if (!res.insertId)
               return Alert.alert(

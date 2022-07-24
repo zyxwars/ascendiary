@@ -14,3 +14,7 @@ export const TextArea = styled.TextInput`
   border-width: 1px;
   padding: 8px;
 `;
+
+export const HCenter = styled.View`
+  align-items: center;
+`;

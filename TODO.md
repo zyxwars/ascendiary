@@ -1,7 +1,7 @@
 # Primary
 
+- Add crag create option
 - Refresh page after returning to it > Use as in Home screen
-- Add route edit and delete
 - Finish editable component > scrap for now and make an edit page for every component
 
 # Quick fixes:

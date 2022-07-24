@@ -21,13 +21,13 @@ import { Route } from "./src/screens/route/Route";
 import { ThemeProvider } from "@rneui/themed";
 import { theme } from "./src/theme/theme";
 import { EditRoute } from "./src/screens/route/EditRoute";
-import { routesModel } from "./src/db/models";
+import { routesModel, withId } from "./src/db/models";
 
 export type RootStackParamList = {
   Home: undefined;
   AddRoute: undefined;
   Route: { id: number };
-  EditRoute: routesModel;
+  EditRoute: withId<routesModel>;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,7 +46,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <SafeAreaProvider>
           <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator screenOptions={{ headerShown: true }}>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="AddRoute" component={AddRoute} />
               <Stack.Screen name="Route" component={Route} />

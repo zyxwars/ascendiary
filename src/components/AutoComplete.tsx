@@ -13,20 +13,25 @@ export const AutoComplete = ({
   setValue: (value: string) => void;
   inputProps?: InputProps;
 }) => {
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const suggestedWords = words.filter((word) =>
     word.toLowerCase().includes(value.toLowerCase())
   );
+  const showSuggestions =
+    isFocused &&
+    value !== "" &&
+    suggestedWords.length !== 0 &&
+    !(suggestedWords.length === 1 && suggestedWords[0] === value);
 
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ position: "relative", width: "100%" }}>
       <Input
         onChangeText={setValue}
         value={value}
         {...inputProps}
-        onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setShowSuggestions(false)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
 
       {showSuggestions && (

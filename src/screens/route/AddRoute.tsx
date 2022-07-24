@@ -1,8 +1,11 @@
+import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
+import { HCenter } from "../../components/globalStyled";
+import { gradeMap } from "../../constants";
 import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
 
 export const AddRoute = () => {
@@ -12,6 +15,7 @@ export const AddRoute = () => {
   const [cragName, setCrag] = useState("");
   const [existingCrags, setExistingCrags] = useState<withId<cragsModel>[]>([]);
   const existingCragNames = existingCrags.map((crag) => crag.name);
+  const [grade, setGrade] = useState();
 
   const getCrags = async () => {
     const res = await cragsTable.find({});
@@ -24,7 +28,7 @@ export const AddRoute = () => {
   }, []);
 
   return (
-    <View
+    <HCenter
       style={{
         flex: 1,
         padding: 8,
@@ -42,6 +46,16 @@ export const AddRoute = () => {
         setValue={setCrag}
         inputProps={{ placeholder: "Crag name" }}
       />
+
+      <Picker
+        selectedValue={grade}
+        onValueChange={(itemValue, itemIndex) => setGrade(itemValue)}
+        style={{ width: "100%" }}
+      >
+        {gradeMap.french.map((grade) => (
+          <Picker.Item key={grade} label={grade} value={grade} />
+        ))}
+      </Picker>
 
       <Button
         title="Add Route"
@@ -75,6 +89,6 @@ export const AddRoute = () => {
           }
         }}
       />
-    </View>
+    </HCenter>
   );
 };

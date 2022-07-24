@@ -1,5 +1,6 @@
 import {
   Link,
+  RouteProp,
   useNavigation,
   useRoute,
   useTheme,
@@ -7,27 +8,17 @@ import {
 import { Button, LinearProgress, Image, Text, Input, FAB } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  ImageBackground,
-  TextInput,
-  View,
-} from "react-native";
-import { routesModel, routesTable } from "../../db/models";
-import * as ImagePicker from "expo-image-picker";
-import * as Linking from "expo-linking";
-import * as MediaLibrary from "expo-media-library";
-import * as S from "./styled";
 
+import { routesModel, routesTable } from "../../db/models";
+import * as S from "./styled";
 import { thumbnailPlaceholder } from "../../constants";
-import { Editable } from "../../components/Editable";
 import { MainContainer, TextArea } from "../../components/globalStyled";
+import { RootStackParamList } from "../../../App";
 
 const routeAtom = atom<routesModel | null>(null);
 
 export const Route = () => {
-  const route = useRoute();
+  const route = useRoute<RouteProp<RootStackParamList, "Route">>();
   const navigation = useNavigation();
   const { id } = route.params;
 
@@ -53,36 +44,39 @@ export const Route = () => {
   return (
     <>
       {routeData && (
-        <S.HeaderBackground
-          source={
-            routeData?.thumbnail
-              ? { uri: routeData.thumbnail }
-              : thumbnailPlaceholder
-          }
-        >
-          <Text h2>{routeData.name}</Text>
-        </S.HeaderBackground>
-      )}
-      <S.HeaderDivider></S.HeaderDivider>
-      <MainContainer>
-        <Text h4>Media</Text>
-        <Text h4>Notes</Text>
-        <TextArea
-          multiline={true}
-          numberOfLines={5}
-          textAlignVertical="top"
-          placeholder="Route notes"
-        />
-      </MainContainer>
+        <>
+          <S.HeaderBackground
+            source={
+              routeData?.thumbnail
+                ? { uri: routeData.thumbnail }
+                : thumbnailPlaceholder
+            }
+          >
+            <Text h2>{routeData.name}</Text>
+          </S.HeaderBackground>
 
-      <FAB
-        size="large"
-        placement="right"
-        icon={{ name: "cog", color: "white", type: "entypo" }}
-        onPress={() => {
-          navigation.navigate("EditRoute", routeData);
-        }}
-      />
+          <S.HeaderDivider></S.HeaderDivider>
+          <MainContainer>
+            <Text h4>Media</Text>
+            <Text h4>Notes</Text>
+            <TextArea
+              multiline={true}
+              numberOfLines={5}
+              textAlignVertical="top"
+              placeholder="Route notes"
+            />
+          </MainContainer>
+
+          <FAB
+            size="large"
+            placement="right"
+            icon={{ name: "cog", color: "white", type: "entypo" }}
+            onPress={() => {
+              navigation.navigate("EditRoute", routeData);
+            }}
+          />
+        </>
+      )}
 
       {/* <Button
         title="Upload thumbnail"

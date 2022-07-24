@@ -18,7 +18,14 @@ export const EditRoute = () => {
       name: params?.name || "",
     },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+
+    // TODO: Save to db
+    // Save only changed fields >  do diff on default and current
+  };
+
+  // Add thumbnail changing
 
   return (
     <>

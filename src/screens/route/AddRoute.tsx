@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/themed";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
 import { routesTable } from "../../db/models";
 
@@ -33,6 +33,12 @@ export const AddRoute = () => {
         onPress={async () => {
           try {
             const res = await routesTable.create({ name });
+
+            if (!res.insertId)
+              return Alert.alert(
+                "Database error",
+                "The record was not created"
+              );
 
             navigation.navigate("Route", { id: res.insertId });
           } catch (error) {

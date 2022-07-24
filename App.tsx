@@ -23,7 +23,7 @@ import { theme } from "./src/theme/theme";
 import { EditRoute } from "./src/screens/route/EditRoute";
 import { routesModel } from "./src/db/models";
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   AddRoute: undefined;
   Route: { id: number };
@@ -31,6 +31,12 @@ type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}
 
 // db.clearDatabase();
 

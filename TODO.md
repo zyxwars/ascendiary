@@ -1,6 +1,5 @@
 # Primary
 
-- Fix navigation typing - https://reactnavigation.org/docs/typescript/
 - Refresh page after returning to it
 - Add route edit and delete
 - Finish editable component > scrap for now and make an edit page for every component

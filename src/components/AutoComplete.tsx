@@ -5,12 +5,14 @@ import { TextInput, TouchableOpacity, View } from "react-native";
 export const AutoComplete = ({
   words,
   value,
-  setValue,
+  onChange,
+  onBlur = () => {},
   inputProps = {},
 }: {
   words: string[];
   value: string;
-  setValue: (value: string) => void;
+  onChange: (value: string) => void;
+  onBlur?: () => void;
   inputProps?: InputProps;
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -20,18 +22,20 @@ export const AutoComplete = ({
   );
   const showSuggestions =
     isFocused &&
-    value !== "" &&
     suggestedWords.length !== 0 &&
     !(suggestedWords.length === 1 && suggestedWords[0] === value);
 
   return (
     <View style={{ position: "relative", width: "100%" }}>
       <Input
-        onChangeText={setValue}
+        onChangeText={onChange}
         value={value}
         {...inputProps}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+          onBlur();
+        }}
       />
 
       {showSuggestions && (
@@ -50,7 +54,7 @@ export const AutoComplete = ({
             <TouchableOpacity
               key={word}
               onPress={() => {
-                setValue(word);
+                onChange(word);
               }}
             >
               <Text>{word}</Text>

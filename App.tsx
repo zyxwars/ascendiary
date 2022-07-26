@@ -14,23 +14,18 @@ import "./src/db/models";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { atom, Provider as JotaiProvider, useAtom } from "jotai";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home } from "./src/screens/home/Home";
-import { AddRoute } from "./src/screens/route/AddRoute";
-import { Route } from "./src/screens/route/Route";
-import { ThemeProvider } from "@rneui/themed";
+import { Icon, ThemeProvider } from "@rneui/themed";
 import { theme } from "./src/theme/theme";
-import { EditRoute } from "./src/screens/route/EditRoute";
-import { routesModel, withId } from "./src/db/models";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  RoutesStackParamList,
+  RoutesStackScreen,
+} from "./src/screens/routes/RoutesStack";
+import { CragsStackScreen } from "./src/screens/crags/CragsStack";
 
-export type RootStackParamList = {
-  Home: undefined;
-  AddRoute: undefined;
-  Route: { id: number };
-  EditRoute: withId<routesModel>;
-};
+export type RootStackParamList = RoutesStackParamList;
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
 
 declare global {
   namespace ReactNavigation {
@@ -46,12 +41,48 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <SafeAreaProvider>
           <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: true }}>
-              <Stack.Screen name="Home" component={Home} />
-              <Stack.Screen name="AddRoute" component={AddRoute} />
-              <Stack.Screen name="Route" component={Route} />
-              <Stack.Screen name="EditRoute" component={EditRoute} />
-            </Stack.Navigator>
+            <Tab.Navigator
+              sceneContainerStyle={{ paddingBottom: 78 }}
+              screenOptions={({ route }) => ({
+                tabBarStyle: {
+                  position: "absolute",
+                  left: 16,
+                  right: 16,
+                  height: 64,
+                  bottom: 16,
+                  backgroundColor: "white",
+                  borderRadius: 32,
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  elevation: 3,
+                },
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarIcon: ({ focused, color, size }) => {
+                  let iconName = "circle";
+
+                  if (route.name === "Routes") iconName = "alt-route";
+                  else if (route.name === "Crags") iconName = "terrain";
+                  else if (route.name === "Settings") iconName = "settings";
+
+                  return (
+                    <Icon
+                      name={iconName}
+                      color={color}
+                      size={size}
+                      type="material"
+                    />
+                  );
+                },
+                // TODO: Get these from theme provider
+                tabBarActiveTintColor: "red",
+                tabBarInactiveTintColor: "black",
+              })}
+            >
+              <Tab.Screen name="Routes" component={RoutesStackScreen} />
+              <Tab.Screen name="Crags" component={CragsStackScreen} />
+              <Tab.Screen name="Settings" component={CragsStackScreen} />
+            </Tab.Navigator>
           </NavigationContainer>
         </SafeAreaProvider>
       </ThemeProvider>

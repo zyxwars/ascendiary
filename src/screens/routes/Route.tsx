@@ -10,10 +10,10 @@ import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 
 import { routesModel, routesTable } from "../../db/models";
-import * as S from "./styled";
 import { thumbnailPlaceholder } from "../../constants";
 import { MainContainer, TextArea } from "../../components/globalStyled";
 import { RootStackParamList } from "../../../App";
+import * as S from "./components/styled";
 
 const routeAtom = atom<routesModel | null>(null);
 

@@ -11,7 +11,7 @@ export const theme = createTheme({
   },
   FAB: {
     color: actionColor,
-    buttonStyle: { borderRadius: 16 },
-    containerStyle: { borderRadius: 16 },
+    buttonStyle: { borderRadius: 1000 },
+    containerStyle: { borderRadius: 1000 },
   },
 });

@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Image, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { routesTable } from "../../db/models";
+import { routesTable } from "../../../db/models";
 import { RouteTile } from "./RouteTile";
 import * as S from "./styled";
 

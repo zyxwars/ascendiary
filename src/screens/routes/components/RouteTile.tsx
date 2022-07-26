@@ -1,8 +1,8 @@
 import { Text } from "@rneui/themed";
 import React from "react";
 import { Image, View } from "react-native";
-import { thumbnailPlaceholder } from "../../constants";
-import { routesModel } from "../../db/models";
+import { thumbnailPlaceholder } from "../../../constants";
+import { routesModel } from "../../../db/models";
 import * as S from "./styled";
 
 export const RouteTile = ({ route }: { route: routesModel }) => {

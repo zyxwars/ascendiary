@@ -1,4 +1,4 @@
-import { Input, InputProps, Text } from "@rneui/themed";
+import { Icon, Input, InputProps, Text } from "@rneui/themed";
 import React, { useEffect, useRef, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 
@@ -45,8 +45,8 @@ export const AutoComplete = ({
             position: "absolute",
             padding: 8,
             top: 48,
-            left: 0,
-            right: 0,
+            left: 8,
+            right: 8,
             zIndex: 1000,
           }}
         >
@@ -57,9 +57,16 @@ export const AutoComplete = ({
                 onChange(word);
               }}
             >
-              <Text>{word}</Text>
+              <Text style={{ fontSize: 20 }}>{word}</Text>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity
+            onPress={() => {
+              // TODO: Open crag creator modal
+            }}
+          >
+            <Icon name="plus" type="entypo" />
+          </TouchableOpacity>
         </View>
       )}
     </View>

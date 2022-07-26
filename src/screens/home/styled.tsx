@@ -4,6 +4,7 @@ const tileHeight = 104;
 const tileBorderRadius = 16;
 
 export const RouteTilesContainer = styled.View`
+flex: 1
   width: 100%;
   height: 160px;
   padding: 16px;

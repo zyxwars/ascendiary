@@ -1,5 +1,5 @@
 import { Icon, Input, InputProps, Text } from "@rneui/themed";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Children, useEffect, useRef, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 
 export const AutoComplete = ({
@@ -8,12 +8,14 @@ export const AutoComplete = ({
   onChange,
   onBlur = () => {},
   inputProps = {},
+  footerComponent,
 }: {
   words: string[];
   value: string;
   onChange: (value: string) => void;
   onBlur?: () => void;
   inputProps?: InputProps;
+  footerComponent?: React.ReactNode;
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -60,13 +62,7 @@ export const AutoComplete = ({
               <Text style={{ fontSize: 20 }}>{word}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity
-            onPress={() => {
-              // TODO: Open crag creator modal
-            }}
-          >
-            <Icon name="plus" type="entypo" />
-          </TouchableOpacity>
+          {footerComponent}
         </View>
       )}
     </View>

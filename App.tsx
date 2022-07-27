@@ -21,9 +21,12 @@ import {
   RoutesStackParamList,
   RoutesStackScreen,
 } from "./src/screens/routes/RoutesStack";
-import { CragsStackScreen } from "./src/screens/crags/CragsStack";
+import {
+  CragsStackParamList,
+  CragsStackScreen,
+} from "./src/screens/crags/CragsStack";
 
-export type RootStackParamList = RoutesStackParamList;
+export type RootStackParamList = RoutesStackParamList & CragsStackParamList;
 
 const Tab = createBottomTabNavigator();
 

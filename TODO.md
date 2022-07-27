@@ -9,6 +9,7 @@
 
 # Long-term:
 
+- Optimize select columns when getting data for menu where not all columns are required
 - Abstract global dialog into an object
 - Refresh page after getting permissions
 - Error handling, error toast/alert

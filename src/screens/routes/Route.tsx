@@ -9,13 +9,13 @@ import { Button, LinearProgress, Image, Text, Input, FAB } from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 
-import { routesModel, routesTable } from "../../db/models";
+import { routesModel, routesTable, withId } from "../../db/models";
 import { thumbnailPlaceholder } from "../../constants";
 import { MainContainer, TextArea } from "../../components/globalStyled";
 import { RootStackParamList } from "../../../App";
 import * as S from "./components/styled";
 
-const routeAtom = atom<routesModel | null>(null);
+const routeAtom = atom<withId<routesModel> | null>(null);
 
 export const Route = () => {
   const route = useRoute<RouteProp<RootStackParamList, "Route">>();
@@ -72,7 +72,7 @@ export const Route = () => {
             placement="right"
             icon={{ name: "cog", color: "white", type: "entypo" }}
             onPress={() => {
-              navigation.navigate("EditRoute", routeData);
+              navigation.navigate("Edit Route", routeData);
             }}
           />
         </>

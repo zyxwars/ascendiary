@@ -7,9 +7,9 @@ import { Route } from "./Route";
 
 export type RoutesStackParamList = {
   Home: undefined;
-  AddRoute: undefined;
+  "Add Route": undefined;
   Route: { id: number };
-  EditRoute: withId<routesModel>;
+  "Edit Route": withId<routesModel>;
 };
 
 const Stack = createNativeStackNavigator<RoutesStackParamList>();
@@ -18,9 +18,9 @@ export const RoutesStackScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="AddRoute" component={AddRoute} />
+      <Stack.Screen name="Add Route" component={AddRoute} />
       <Stack.Screen name="Route" component={Route} />
-      <Stack.Screen name="EditRoute" component={EditRoute} />
+      <Stack.Screen name="Edit Route" component={EditRoute} />
     </Stack.Navigator>
   );
 };

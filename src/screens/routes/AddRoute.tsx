@@ -1,9 +1,9 @@
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Input, Text } from "@rneui/themed";
+import { Button, Icon, Input, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
 import { HCenter } from "../../components/globalStyled";
 import { gradeMap } from "../../constants";
@@ -104,6 +104,15 @@ export const AddRoute = () => {
             onChange={onChange}
             onBlur={onBlur}
             inputProps={{ placeholder: "Crag" }}
+            footerComponent={
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Crags", { screen: "Add Crag" });
+                }}
+              >
+                <Icon name="plus" type="entypo" />
+              </TouchableOpacity>
+            }
           />
         )}
         name="crag"

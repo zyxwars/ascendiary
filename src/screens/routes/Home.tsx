@@ -20,7 +20,7 @@ export const Home = () => {
             placement="right"
             icon={{ name: "plus", color: "white", type: "entypo" }}
             onPress={() => {
-              navigation.navigate("AddRoute");
+              navigation.navigate("Add Route");
             }}
           />
         </>

@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator<CragsStackParamList>();
 
 export const CragsStackScreen = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Add Crag" component={AddCrag} />
       <Stack.Screen name="Crag" component={Crag} />

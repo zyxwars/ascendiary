@@ -2,12 +2,18 @@ import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Icon, Input, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
 import { HCenter } from "../../components/globalStyled";
 import { gradeMap } from "../../constants";
 import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
+
+type FormData = {
+  name: string;
+  crag: string;
+  grade: string;
+};
 
 export const AddRoute = () => {
   const navigation = useNavigation();
@@ -25,7 +31,7 @@ export const AddRoute = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: {
       name: "",
       crag: "",
@@ -33,8 +39,7 @@ export const AddRoute = () => {
     },
   });
 
-  // TODO: Add type from the form hook?
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       let cragId: number;
 

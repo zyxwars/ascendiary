@@ -1,11 +1,12 @@
 # Primary
 
-- change fab sizes
-- Add crag create option
-- Refresh page after returning to it > Use as in Home screen
-- Finish editable component > scrap for now and make an edit page for every component
+- Go back to previous stack > use navigate or try resetting stack and goBAck
+- Add scrolling to autocomplete, routeslist, etc.
 
 # Quick fixes:
+
+- Fix routenav typing when switching between stacks
+- Change fab sizes
 
 # Long-term:
 
@@ -13,3 +14,4 @@
 - Abstract global dialog into an object
 - Refresh page after getting permissions
 - Error handling, error toast/alert
+- Check for too long stack history and add resets, don't allow return from specific routes

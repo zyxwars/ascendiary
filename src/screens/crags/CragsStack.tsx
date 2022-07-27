@@ -6,14 +6,14 @@ import { Home } from "./Home";
 export type CragsStackParamList = {
   Home: undefined;
   "Add Crag": undefined;
-  Crag: undefined;
+  Crag: { id: number };
 };
 
 const Stack = createNativeStackNavigator<CragsStackParamList>();
 
 export const CragsStackScreen = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Add Crag" component={AddCrag} />
       <Stack.Screen name="Crag" component={Crag} />

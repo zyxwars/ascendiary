@@ -1,9 +1,10 @@
 import { Picker } from "@react-native-picker/picker";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Input, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
+import { RootStackParamList } from "../../../App";
 import { AutoComplete } from "../../components/AutoComplete";
 import { HCenter } from "../../components/globalStyled";
 import { gradeMap } from "../../constants";
@@ -36,10 +37,10 @@ export const AddCrag = () => {
     try {
       const res = await cragsTable.create({ name: data.name });
 
-      if (!res.insertId)
+      if (!res?.insertId)
         return Alert.alert("Database error", "The record was not created");
 
-      // navigation.navigate("Crag", { id: res.insertId });
+      navigation.navigate("Crag", { id: res.insertId });
     } catch (error) {
       console.log(error);
 
@@ -61,8 +62,10 @@ export const AddCrag = () => {
       <Controller
         control={control}
         rules={{
-          required: true,
-          validate: (value) => !existingCragNames.includes(value),
+          required: "This is required.",
+          validate: (value) =>
+            !existingCragNames.includes(value) ||
+            "Crag with this name already exists",
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
@@ -74,7 +77,7 @@ export const AddCrag = () => {
         )}
         name="name"
       />
-      {errors.name && <Text>This is required.</Text>}
+      {errors.name && <Text>{errors.name.message}</Text>}
 
       {/* TODO: Add multi choice for grading systems to show for this crag */}
 

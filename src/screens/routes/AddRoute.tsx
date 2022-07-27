@@ -112,7 +112,10 @@ export const AddRoute = () => {
             footerComponent={
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Crags", { screen: "Add Crag" });
+                  navigation.navigate("Crags", {
+                    screen: "Add Crag",
+                    initial: false,
+                  });
                 }}
               >
                 <Icon name="plus" type="entypo" />

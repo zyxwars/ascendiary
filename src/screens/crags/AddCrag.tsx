@@ -12,6 +12,7 @@ import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
 
 export const AddCrag = () => {
   const navigation = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList, "Add Crag">>();
 
   const [existingCrags, setExistingCrags] = useState<withId<cragsModel>[]>([]);
   const existingCragNames = existingCrags.map((crag) => crag.name);
@@ -32,13 +33,15 @@ export const AddCrag = () => {
     },
   });
 
-  // TODO: Add type from the form hook?
   const onSubmit: SubmitHandler<cragsModel> = async (data) => {
     try {
       const res = await cragsTable.create({ name: data.name });
 
       if (!res?.insertId)
         return Alert.alert("Database error", "The record was not created");
+
+      if (route?.params?.goBackOnCreate)
+        return navigation.getParent()?.goBack();
 
       navigation.navigate("Crag", { id: res.insertId });
     } catch (error) {

@@ -1,10 +1,10 @@
 # Primary
 
-- Go back to previous stack > use navigate or try resetting stack and goBAck
 - Add scrolling to autocomplete, routeslist, etc.
 
 # Quick fixes:
 
+- Crag autocomplete not showing the add button if no crags exist
 - Fix routenav typing when switching between stacks
 - Change fab sizes
 

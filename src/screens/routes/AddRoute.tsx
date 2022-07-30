@@ -114,6 +114,9 @@ export const AddRoute = () => {
                 onPress={() => {
                   navigation.navigate("Crags", {
                     screen: "Add Crag",
+                    params: {
+                      goBackOnCreate: true,
+                    },
                     initial: false,
                   });
                 }}

@@ -5,7 +5,7 @@ import { Home } from "./Home";
 
 export type CragsStackParamList = {
   Home: undefined;
-  "Add Crag": undefined;
+  "Add Crag": { goBackOnCreate?: boolean };
   Crag: { id: number };
 };
 

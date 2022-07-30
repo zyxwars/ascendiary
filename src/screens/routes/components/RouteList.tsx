@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Image, Text } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { routesTable } from "../../../db/models";
 import { RouteTile } from "./RouteTile";
@@ -16,13 +16,18 @@ export const RouteList = () => {
 
       setRoutes(res.rows._array);
     } catch (error) {
+      alert(error);
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    getRoutes();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getRoutes();
+
+      return () => {};
+    }, [])
+  );
 
   return (
     <S.RouteTilesContainer>

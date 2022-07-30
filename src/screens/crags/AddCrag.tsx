@@ -58,12 +58,10 @@ export const AddCrag = () => {
     }
   };
 
-  useEffect(() => {
-    getCrags();
-  }, []);
-
   useFocusEffect(
     useCallback(() => {
+      getCrags();
+
       return () => {
         // Reset the goBackOnCreateValue so that when the route is navigated to by changing the parent stack later it isn't stuck with the value on true
         route.params = { goBackOnCreate: false };

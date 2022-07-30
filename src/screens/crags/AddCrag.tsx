@@ -2,11 +2,13 @@ import { Picker } from "@react-native-picker/picker";
 import {
   CommonActions,
   RouteProp,
+  StackActions,
+  useFocusEffect,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
 import { Button, Input, Text } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
 import { RootStackParamList } from "../../../App";
@@ -60,7 +62,16 @@ export const AddCrag = () => {
     getCrags();
   }, []);
 
-  React.useEffect(
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        // Reset the goBackOnCreateValue so that when the route is navigated to by changing the parent stack later it isn't stuck with the value on true
+        route.params = { goBackOnCreate: false };
+      };
+    }, [])
+  );
+
+  useEffect(
     () =>
       navigation.addListener("beforeRemove", (e) => {
         if (!route?.params?.goBackOnCreate) {

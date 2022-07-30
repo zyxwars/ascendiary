@@ -1,5 +1,8 @@
 # Primary
 
+- Add Crag remembers the go back value even if navigated to using the stack and not Add Route
+  - 1. move route to both stacks and don't even use interstack navigation
+  - 2. reset state on route load
 - Add scrolling to autocomplete, routeslist, etc.
 
 # Quick fixes:

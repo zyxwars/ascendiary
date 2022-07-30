@@ -1,7 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button, Icon, Input, Text } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
@@ -64,14 +64,15 @@ export const AddRoute = () => {
 
       Alert.alert("Unexpected error", "The record was not created");
     }
-
-    // TODO: Save to db
-    // Save only changed fields >  do diff on default and current
   };
 
-  useEffect(() => {
-    getCrags();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getCrags();
+
+      return () => {};
+    }, [])
+  );
 
   return (
     <HCenter

@@ -4,6 +4,7 @@ import { Home } from "./Home";
 import { AddRoute } from "./AddRoute";
 import { EditRoute } from "./EditRoute";
 import { Route } from "./Route";
+import { createStackNavigator } from "@react-navigation/stack";
 
 export type RoutesStackParamList = {
   Home: undefined;
@@ -12,7 +13,7 @@ export type RoutesStackParamList = {
   "Edit Route": withId<routesModel>;
 };
 
-const Stack = createNativeStackNavigator<RoutesStackParamList>();
+const Stack = createStackNavigator<RoutesStackParamList>();
 
 export const RoutesStackScreen = () => {
   return (

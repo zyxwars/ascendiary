@@ -1,5 +1,10 @@
 import { Picker } from "@react-native-picker/picker";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { Button, Input, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -54,6 +59,21 @@ export const AddCrag = () => {
   useEffect(() => {
     getCrags();
   }, []);
+
+  React.useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        if (!route?.params?.goBackOnCreate) {
+          return;
+        }
+
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        navigation.getParent()?.goBack();
+      }),
+    [navigation]
+  );
 
   return (
     <HCenter

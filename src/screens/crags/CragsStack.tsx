@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { AddCrag } from "./AddCrag";
 import { Crag } from "./Crag";
 import { Home } from "./Home";
@@ -9,7 +10,7 @@ export type CragsStackParamList = {
   Crag: { id: number };
 };
 
-const Stack = createNativeStackNavigator<CragsStackParamList>();
+const Stack = createStackNavigator<CragsStackParamList>();
 
 export const CragsStackScreen = () => {
   return (

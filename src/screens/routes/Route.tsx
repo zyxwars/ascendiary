@@ -5,15 +5,24 @@ import {
   useRoute,
   useTheme,
 } from "@react-navigation/native";
-import { Button, LinearProgress, Image, Text, Input, FAB } from "@rneui/themed";
+import {
+  Button,
+  LinearProgress,
+  Image,
+  Text,
+  Input,
+  FAB,
+  Icon,
+} from "@rneui/themed";
 import { atom, useAtom, useSetAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 
 import { routesModel, routesTable, withId } from "../../db/models";
-import { thumbnailPlaceholder } from "../../constants";
-import { MainContainer, TextArea } from "../../components/globalStyled";
+import { routeImageFallback } from "../../constants";
+import { MainContainer, TextArea } from "../../components/globalStyles";
 import { RootStackParamList } from "../../../App";
-import * as S from "./components/styled";
+import * as S from "./components/styles";
+import { View } from "react-native";
 
 const routeAtom = atom<withId<routesModel> | null>(null);
 
@@ -49,7 +58,7 @@ export const Route = () => {
             source={
               routeData?.thumbnail
                 ? { uri: routeData.thumbnail }
-                : thumbnailPlaceholder
+                : routeImageFallback
             }
           >
             <Text h2>{routeData.name}</Text>

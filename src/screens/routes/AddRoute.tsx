@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
-import { HCenter } from "../../components/globalStyled";
+import { HCenter } from "../../components/globalStyles";
 import { gradeMap } from "../../constants";
 import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
 

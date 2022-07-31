@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Input } from "@rneui/themed";
 import { routesModel, routesTable } from "../../db/models";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
-import { HCenter } from "../../components/globalStyled";
+import { HCenter } from "../../components/globalStyles";
 
 export const EditRoute = () => {
   const navigation = useNavigation();

@@ -1,10 +1,10 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Image, Text } from "@rneui/themed";
 import React, { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
+import { ThumbnailTile } from "../../../components/Tiles/ThumbnailTile";
+import { routeImageFallback } from "../../../constants";
 import { routesTable } from "../../../db/models";
-import { RouteTile } from "./RouteTile";
-import * as S from "./styled";
+import * as S from "./styles";
 
 export const RouteList = () => {
   const navigation = useNavigation();
@@ -36,7 +36,11 @@ export const RouteList = () => {
           key={route.id}
           onPress={() => navigation.navigate("Route", { id: route.id })}
         >
-          <RouteTile route={route} />
+          <ThumbnailTile
+            name={route.name}
+            thumbnail={route?.thumbnail}
+            fallback={routeImageFallback}
+          />
         </TouchableOpacity>
       ))}
     </S.RouteTilesContainer>

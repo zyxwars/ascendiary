@@ -7,22 +7,17 @@ import { Picker } from "@react-native-picker/picker";
 
 export const Home = () => {
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
 
   return (
     <>
-      {isFocused && (
-        <>
-          <FAB
-            size="large"
-            placement="right"
-            icon={{ name: "plus", color: "white", type: "entypo" }}
-            onPress={() => {
-              navigation.navigate("Add Crag", {});
-            }}
-          />
-        </>
-      )}
+      <FAB
+        size="large"
+        placement="right"
+        icon={{ name: "plus", color: "white", type: "entypo" }}
+        onPress={() => {
+          navigation.navigate("Add Crag", {});
+        }}
+      />
     </>
   );
 };

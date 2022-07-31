@@ -1,6 +1,8 @@
 # Primary
 
+- Make lists a flatlist
 - Add scrolling to autocomplete, routeslist, etc.
+
 - Error handled api for basic db queries
 
 # Quick fixes:
@@ -15,3 +17,4 @@
 - Refresh page after getting permissions
 - Error handling, error toast/alert
 - Check for too long stack history and add resets, don't allow return from specific routes
+- Downsize thumbnail images

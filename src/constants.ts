@@ -1,4 +1,5 @@
-export const routeImageFallback = require("../assets/thumbnailPlaceholder.jpg");
+export const routeImageFallback = require("../assets/routeFallback.jpg");
+export const cragImageFallback = require("../assets/cragFallback.jpg");
 
 export const gradeMap = {
   french: [

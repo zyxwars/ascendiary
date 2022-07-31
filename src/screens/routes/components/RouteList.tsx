@@ -3,12 +3,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { ThumbnailTile } from "../../../components/Tiles/ThumbnailTile";
 import { routeImageFallback } from "../../../constants";
-import { routesTable } from "../../../db/models";
+import { routesModel, routesTable, withId } from "../../../db/models";
 import * as S from "./styles";
 
 export const RouteList = () => {
   const navigation = useNavigation();
-  const [routes, setRoutes] = useState<any[]>([]);
+  const [routes, setRoutes] = useState<withId<routesModel>[]>([]);
 
   const getRoutes = async () => {
     try {

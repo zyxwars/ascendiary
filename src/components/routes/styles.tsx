@@ -3,12 +3,6 @@ import styled from "styled-components/native";
 const headerHeight = 200;
 const borderHeight = 48;
 
-export const RouteTilesContainer = styled.View`
-  flex: 1;
-  width: 100%;
-  padding: 16px;
-`;
-
 export const HeaderBackground = styled.ImageBackground`
   position: relative;
   width: 100%;

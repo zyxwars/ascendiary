@@ -1,8 +1,5 @@
 # Primary
 
-- Make lists a flatlist
-- Add scrolling to autocomplete, routeslist, etc.
-
 - Error handled api for basic db queries
 
 # Quick fixes:
@@ -10,6 +7,7 @@
 - Crag autocomplete not showing the add button if no crags exist
 - Fix routenav typing when switching between stacks
 - Change fab sizes
+- Fix flatlist bottom being cut off
 
 # Long-term:
 

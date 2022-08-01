@@ -2,11 +2,10 @@ import React, { useCallback, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FAB } from "@rneui/themed";
 import { cragsModel, cragsTable, withId } from "../../db/models";
-import { TouchableOpacity } from "react-native";
-import { ThumbnailTile } from "../../components/Tiles/ThumbnailTile";
 import { cragImageFallback } from "../../constants";
+import { TileList } from "../../components/Tiles/TileList";
 
-export const Home = () => {
+export const AllCrags = () => {
   const navigation = useNavigation();
   const [crags, setCrags] = useState<withId<cragsModel>[]>([]);
 
@@ -31,18 +30,11 @@ export const Home = () => {
 
   return (
     <>
-      {crags.map((crag) => (
-        <TouchableOpacity
-          key={crag.id}
-          onPress={() => navigation.navigate("Crag", { id: crag.id })}
-        >
-          <ThumbnailTile
-            name={crag.name}
-            thumbnail={crag?.thumbnail}
-            fallback={cragImageFallback}
-          />
-        </TouchableOpacity>
-      ))}
+      <TileList
+        data={crags}
+        imageFallback={cragImageFallback}
+        onPress={(id) => navigation.navigate("Crag", { id })}
+      />
       <FAB
         size="large"
         placement="right"

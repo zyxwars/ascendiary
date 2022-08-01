@@ -27,7 +27,6 @@ const tileBorderRadius = 16;
 export const Container = styled.View`
   width: 100%;
   height: ${tileHeight}px;
-  margin-bottom: 16px;
   flex-direction: row;
 
   border-radius: ${tileBorderRadius}px;

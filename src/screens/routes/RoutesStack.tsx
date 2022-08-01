@@ -1,6 +1,5 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { withId, routesModel } from "../../db/models";
-import { Home } from "./Home";
+import { AllRoutes } from "./AllRoutes";
 import { AddRoute } from "./AddRoute";
 import { EditRoute } from "./EditRoute";
 import { Route } from "./Route";
@@ -18,7 +17,7 @@ const Stack = createStackNavigator<RoutesStackParamList>();
 export const RoutesStackScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="All Routes" component={Home} />
+      <Stack.Screen name="All Routes" component={AllRoutes} />
       <Stack.Screen name="Add Route" component={AddRoute} />
       <Stack.Screen
         name="Route"

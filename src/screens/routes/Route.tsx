@@ -3,26 +3,16 @@ import {
   RouteProp,
   useNavigation,
   useRoute,
-  useTheme,
 } from "@react-navigation/native";
-import {
-  Button,
-  LinearProgress,
-  Image,
-  Text,
-  Input,
-  FAB,
-  Icon,
-} from "@rneui/themed";
-import { atom, useAtom, useSetAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import { Text, FAB } from "@rneui/themed";
+import { atom, useAtom } from "jotai";
+import React, { useEffect } from "react";
 
 import { routesModel, routesTable, withId } from "../../db/models";
 import { routeImageFallback } from "../../constants";
 import { MainContainer, TextArea } from "../../components/globalStyles";
 import { RootStackParamList } from "../../../App";
-import * as S from "./components/styles";
-import { View } from "react-native";
+import * as S from "../../components/routes/styles";
 
 const routeAtom = atom<withId<routesModel> | null>(null);
 

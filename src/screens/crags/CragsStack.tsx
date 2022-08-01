@@ -1,8 +1,7 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AddCrag } from "./AddCrag";
 import { Crag } from "./Crag";
-import { Home } from "./Home";
+import { AllCrags } from "./AllCrags";
 
 export type CragsStackParamList = {
   "All Crags": undefined;
@@ -15,7 +14,7 @@ const Stack = createStackNavigator<CragsStackParamList>();
 export const CragsStackScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="All Crags" component={Home} />
+      <Stack.Screen name="All Crags" component={AllCrags} />
       <Stack.Screen name="Add Crag" component={AddCrag} />
       <Stack.Screen name="Crag" component={Crag} />
     </Stack.Navigator>

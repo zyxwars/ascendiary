@@ -14,8 +14,14 @@ import { Alert, View } from "react-native";
 import { RootStackParamList } from "../../../App";
 import { AutoComplete } from "../../components/AutoComplete";
 import { HCenter } from "../../components/globalStyles";
+import { MediaPicker } from "../../components/MediaPicker";
 import { gradeMap } from "../../constants";
 import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
+
+type FormData = {
+  name: string;
+  thumbnail: string;
+};
 
 export const AddCrag = () => {
   const navigation = useNavigation();
@@ -34,13 +40,14 @@ export const AddCrag = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<cragsModel>({
+  } = useForm<FormData>({
     defaultValues: {
       name: "",
+      thumbnail: "",
     },
   });
 
-  const onSubmit: SubmitHandler<cragsModel> = async (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const res = await cragsTable.create({ name: data.name });
 
@@ -112,6 +119,11 @@ export const AddCrag = () => {
       {errors.name && <Text>{errors.name.message}</Text>}
 
       {/* TODO: Add multi choice for grading systems to show for this crag */}
+
+      <MediaPicker
+        label="Pick a thumbnail"
+        onChange={(image) => console.log(image)}
+      />
 
       <Button size="lg" title="Add Route" onPress={handleSubmit(onSubmit)} />
     </HCenter>

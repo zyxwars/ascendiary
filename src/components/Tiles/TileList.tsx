@@ -14,24 +14,33 @@ export const TileList = ({
   imageFallback: any;
 }) => {
   return (
-    <FlatList
-      style={{ padding: 16 }}
-      data={data}
-      ItemSeparatorComponent={Separator}
-      renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => onPress(item.id)}>
-          <ThumbnailTile
-            name={item.name}
-            thumbnail={item?.thumbnail}
-            fallback={imageFallback}
-          />
-        </TouchableOpacity>
-      )}
-      keyExtractor={(item) => String(item.id)}
-    />
+    <Container>
+      <FlatList
+        data={data}
+        ListHeaderComponent={Separator}
+        ListFooterComponent={Separator}
+        ItemSeparatorComponent={Separator}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => onPress(item.id)}>
+            <ThumbnailTile
+              name={item.name}
+              thumbnail={item?.thumbnail}
+              fallback={imageFallback}
+            />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => String(item.id)}
+      />
+    </Container>
   );
 };
 
+const Container = styled.View`
+  flex: 1;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
+
 const Separator = styled.View`
-  height: 16px;
+  height: 10px;
 `;

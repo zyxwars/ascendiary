@@ -1,12 +1,12 @@
 import {
-  Link,
   RouteProp,
+  useFocusEffect,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
 import { Text, FAB } from "@rneui/themed";
 import { atom, useAtom } from "jotai";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 
 import { routesModel, routesTable, withId } from "../../db/models";
 import { routeImageFallback } from "../../constants";
@@ -36,9 +36,13 @@ export const Route = () => {
     }
   };
 
-  useEffect(() => {
-    getRoute();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getRoute();
+
+      return () => {};
+    }, [])
+  );
 
   return (
     <>

@@ -7,7 +7,6 @@
 - Crag autocomplete not showing the add button if no crags exist
 - Fix routenav typing when switching between stacks
 - Change fab sizes
-- Fix flatlist bottom being cut off
 
 # Long-term:
 
@@ -16,3 +15,29 @@
 - Error handling, error toast/alert
 - Check for too long stack history and add resets, don't allow return from specific routes
 - Downsize thumbnail images
+
+# Routes
+
+- [x] Create
+- [x] Edit
+- [x] Delete
+
+### Home page
+
+- [x] List
+- [ ] Search
+- [ ] Filter
+
+# Crags
+
+- [x] Create
+- [ ] Edit
+- [ ] Delete
+
+### Home page
+
+- [x] List
+- [ ] Search
+- [ ] Filter
+
+# Settings

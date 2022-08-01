@@ -1,31 +1,39 @@
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { Button, Input, Text } from "@rneui/themed";
 import React from "react";
-import { Text, Alert } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { Button, Input } from "@rneui/themed";
-import { routesTable } from "../../db/models";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { Alert } from "react-native";
 import { RootStackParamList } from "../../../App";
 import { HCenter } from "../../components/globalStyles";
+import { cragsTable } from "../../db/models";
 
-export const EditRoute = () => {
+type FormData = {
+  name: string;
+};
+
+export const EditCrag = () => {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<RootStackParamList, "Edit Route">>();
+  const route = useRoute<RouteProp<RootStackParamList, "Edit Crag">>();
   const { params } = route;
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: {
       name: params.name || "",
     },
   });
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const res = await cragsTable.update({ id: params.id }, data);
 
-    // TODO: Save to db
-    // Save only changed fields >  do diff on default and current
+      navigation.navigate("Crag", { id: params.id });
+    } catch (e: any) {
+      Alert.alert("Unexpected error", e.message);
+      console.log(e);
+    }
   };
 
   // Add thumbnail changing
@@ -33,23 +41,23 @@ export const EditRoute = () => {
   return (
     <HCenter>
       <Button
-        title="Delete route"
+        title="Delete crag"
         onPress={() => {
           Alert.alert(
             "Confirm delete",
-            "Are you sure you want to delete this route?",
+            "Are you sure you want to delete this crag?",
             [
               { text: "Cancel", style: "cancel" },
               {
                 text: "Delete",
                 onPress: async () => {
                   try {
-                    const res = await routesTable.delete({ id: params.id });
+                    const res = await cragsTable.delete({ id: params.id });
 
-                    navigation.navigate("All Routes");
+                    navigation.navigate("All Crags");
                   } catch (error) {
-                    console.log(error);
                     Alert.alert("Unexpected error", "Delete failed");
+                    console.log(error);
                   }
                 },
                 style: "destructive",

@@ -120,10 +120,15 @@ export const AddCrag = () => {
 
       {/* TODO: Add multi choice for grading systems to show for this crag */}
 
-      <MediaPicker
-        label="Pick a thumbnail"
-        onChange={(image) => console.log(image)}
+      <Controller
+        control={control}
+        rules={{}}
+        render={({ field: { onChange } }) => (
+          <MediaPicker label="Pick a thumbnail" onChange={onChange} />
+        )}
+        name="thumbnail"
       />
+      {errors.thumbnail && <Text>{errors.thumbnail.message}</Text>}
 
       <Button size="lg" title="Add Route" onPress={handleSubmit(onSubmit)} />
     </HCenter>

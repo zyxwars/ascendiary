@@ -9,7 +9,7 @@ import { atom, useAtom } from "jotai";
 import React, { useCallback } from "react";
 
 import { routesModel, routesTable, withId } from "../../db/models";
-import { routeImageFallback } from "../../constants";
+import { gradeMap, routeImageFallback } from "../../constants";
 import { MainContainer, TextArea } from "../../components/globalStyles";
 import { RootStackParamList } from "../../../App";
 import * as S from "../../components/routes/styles";
@@ -56,6 +56,7 @@ export const Route = () => {
             }
           >
             <Text h2>{routeData.name}</Text>
+            <Text h4>{routeData.grade}</Text>
           </S.HeaderBackground>
 
           <S.HeaderDivider></S.HeaderDivider>

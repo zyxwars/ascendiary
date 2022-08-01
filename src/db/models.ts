@@ -7,13 +7,16 @@ export type withId<Model> = Model & {
 
 export type cragsModel = {
   name: string;
+  thumbnail?: string;
 };
 export const cragsTable = new Table<cragsModel>(db, "crags", {
   name: "text not null",
+  thumbnail: "text",
 });
 
 export type routesModel = {
   name: string;
+  grade: number;
   thumbnail?: string;
   cragid: number;
 };
@@ -22,6 +25,7 @@ export const routesTable = new Table<routesModel>(
   "routes",
   {
     name: "text not null",
+    grade: "integer",
     thumbnail: "text",
     cragid: "integer",
   },

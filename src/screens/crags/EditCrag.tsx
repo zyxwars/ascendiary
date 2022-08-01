@@ -5,10 +5,12 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Alert } from "react-native";
 import { RootStackParamList } from "../../../App";
 import { HCenter } from "../../components/globalStyles";
+import { MediaPicker } from "../../components/MediaPicker";
 import { cragsTable } from "../../db/models";
 
 type FormData = {
   name: string;
+  thumbnail: string;
 };
 
 export const EditCrag = () => {
@@ -23,6 +25,7 @@ export const EditCrag = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: params.name || "",
+      thumbnail: params?.thumbnail || "",
     },
   });
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -78,6 +81,16 @@ export const EditCrag = () => {
         name="name"
       />
       {errors.name && <Text>This is required.</Text>}
+
+      <Controller
+        control={control}
+        rules={{}}
+        render={({ field: { onChange } }) => (
+          <MediaPicker label="Pick a thumbnail" onChange={onChange} />
+        )}
+        name="thumbnail"
+      />
+      {errors.thumbnail && <Text>{errors.thumbnail.message}</Text>}
 
       <Button title="Save changes" onPress={handleSubmit(onSubmit)} />
     </HCenter>

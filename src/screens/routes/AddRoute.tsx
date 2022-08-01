@@ -6,6 +6,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { AutoComplete } from "../../components/AutoComplete";
 import { HCenter } from "../../components/globalStyles";
+import { MediaPicker, saveUriToAlbum } from "../../components/MediaPicker";
 import { gradeMap } from "../../constants";
 import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
 
@@ -13,6 +14,7 @@ type FormData = {
   name: string;
   crag: string;
   grade: string;
+  thumbnail: string;
 };
 
 export const AddRoute = () => {
@@ -36,6 +38,7 @@ export const AddRoute = () => {
       name: "",
       crag: "",
       grade: "",
+      thumbnail: "",
     },
   });
 
@@ -50,8 +53,12 @@ export const AddRoute = () => {
       } else
         cragId = existingCrags.filter((crag) => crag.name === data.crag)[0].id;
 
+      if (data.thumbnail !== "") await saveUriToAlbum(data.thumbnail);
+
       const res = await routesTable.create({
         name: data.name,
+        grade: gradeMap.french.indexOf(data.grade),
+        thumbnail: data.thumbnail,
         cragid: cragId,
       });
 
@@ -154,6 +161,16 @@ export const AddRoute = () => {
         name="grade"
       />
       {errors.grade && <Text>This is required.</Text>}
+
+      <Controller
+        control={control}
+        rules={{}}
+        render={({ field: { onChange } }) => (
+          <MediaPicker label="Pick a thumbnail" onChange={onChange} />
+        )}
+        name="thumbnail"
+      />
+      {errors.thumbnail && <Text>{errors.thumbnail.message}</Text>}
 
       <Button size="lg" title="Add Route" onPress={handleSubmit(onSubmit)} />
     </HCenter>

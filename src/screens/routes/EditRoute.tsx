@@ -1,11 +1,17 @@
 import React from "react";
 import { Text, Alert } from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Button, Input } from "@rneui/themed";
 import { routesTable } from "../../db/models";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
 import { HCenter } from "../../components/globalStyles";
+import { MediaPicker } from "../../components/MediaPicker";
+
+type FormData = {
+  name: string;
+  thumbnail: string;
+};
 
 export const EditRoute = () => {
   const navigation = useNavigation();
@@ -16,19 +22,22 @@ export const EditRoute = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: {
       name: params.name || "",
+      thumbnail: params?.thumbnail || "",
     },
   });
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const res = await routesTable.update({ id: params.id }, data);
 
-    // TODO: Save to db
-    // Save only changed fields >  do diff on default and current
+      navigation.navigate("Route", { id: params.id });
+    } catch (e: any) {
+      Alert.alert("Unexpected error", e.message);
+      console.log(e);
+    }
   };
-
-  // Add thumbnail changing
 
   return (
     <HCenter>
@@ -70,6 +79,16 @@ export const EditRoute = () => {
         name="name"
       />
       {errors.name && <Text>This is required.</Text>}
+
+      <Controller
+        control={control}
+        rules={{}}
+        render={({ field: { onChange } }) => (
+          <MediaPicker label="Pick a thumbnail" onChange={onChange} />
+        )}
+        name="thumbnail"
+      />
+      {errors.thumbnail && <Text>{errors.thumbnail.message}</Text>}
 
       <Button title="Save changes" onPress={handleSubmit(onSubmit)} />
     </HCenter>

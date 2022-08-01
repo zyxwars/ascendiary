@@ -1,5 +1,5 @@
-import { Icon, Text } from "@rneui/themed";
-import React from "react";
+import { Icon, Image, Text } from "@rneui/themed";
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
@@ -36,8 +36,10 @@ const getMediaPermissions = async () => {
 const moveAssetToAlbum = async (asset: MediaLibrary.Asset) => {
   let album = await MediaLibrary.getAlbumAsync("Ascendiary");
 
-  if (!album) album = await MediaLibrary.createAlbumAsync("Ascendiary", asset);
-  else await MediaLibrary.addAssetsToAlbumAsync(asset, album);
+  if (!album)
+    // Use copyAsset true here to avoid triggering the modify pop up and then deal with deleting in a later cancel handled function
+    album = await MediaLibrary.createAlbumAsync("Ascendiary", asset, true);
+  else await MediaLibrary.addAssetsToAlbumAsync(asset, album, true);
 
   const assets = await MediaLibrary.getAssetsAsync({
     album,
@@ -48,7 +50,7 @@ const moveAssetToAlbum = async (asset: MediaLibrary.Asset) => {
   return assets.assets[0];
 };
 
-const saveRes = async (uri: string) => {
+export const saveUriToAlbum = async (uri: string) => {
   const asset = await MediaLibrary.createAssetAsync(uri);
   const movedAsset = moveAssetToAlbum(asset);
 
@@ -76,11 +78,14 @@ export const MediaPicker = ({
   useGallery = true,
 }: {
   label: string;
-  onChange: (image: MediaLibrary.Asset) => void;
+  onChange: (imageUri: string) => void;
   mediaTypes?: ImagePicker.MediaTypeOptions;
   useCamera?: boolean;
   useGallery?: boolean;
 }) => {
+  const [currentImage, setCurrentImage] =
+    useState<ImagePicker.ImageInfo | null>(null);
+
   const handleOpenCamera = async () => {
     await getCameraPermissions();
 
@@ -93,7 +98,9 @@ export const MediaPicker = ({
 
     if (res.cancelled) return;
 
-    onChange(await saveRes(res.uri));
+    setCurrentImage(res);
+
+    onChange(res.uri);
   };
 
   const handleOpenGallery = async () => {
@@ -105,12 +112,22 @@ export const MediaPicker = ({
 
     if (res.cancelled) return;
 
-    onChange(await saveRes(res.uri));
+    setCurrentImage(res);
+
+    onChange(res.uri);
   };
 
   return (
     <MainContainer>
       <PickerLabel>{label}</PickerLabel>
+
+      {currentImage && (
+        <Image
+          source={{ uri: currentImage.uri }}
+          style={{ width: 100, height: 100 }}
+        />
+      )}
+
       <ButtonContainer>
         {useCamera && (
           <OpenButton onPress={handleOpenCamera}>

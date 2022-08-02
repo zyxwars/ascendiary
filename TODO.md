@@ -10,6 +10,7 @@
 
 - Optimize select columns when getting data for menu where not all columns are required
 - Downsize thumbnail images
+- Improve crag select in add route
 
 # Road map
 

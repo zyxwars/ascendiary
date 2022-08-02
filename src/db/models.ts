@@ -10,7 +10,7 @@ export type cragsModel = {
   thumbnail?: string;
 };
 export const cragsTable = new Table<cragsModel>(db, "crags", {
-  name: "text not null",
+  name: "text unique not null",
   thumbnail: "text",
 });
 

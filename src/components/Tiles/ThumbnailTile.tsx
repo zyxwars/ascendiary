@@ -4,10 +4,12 @@ import styled from "styled-components/native";
 
 export const ThumbnailTile = ({
   name,
+  description,
   thumbnail,
   fallback,
 }: {
   name: string;
+  description?: string;
   thumbnail?: string;
   fallback?: any;
 }) => {
@@ -15,7 +17,8 @@ export const ThumbnailTile = ({
     <Container>
       <Thumbnail source={thumbnail ? { uri: thumbnail } : fallback} />
       <Content>
-        <Text>{name}</Text>
+        <Name>{name}</Name>
+        {description && <Text>{description}</Text>}
       </Content>
     </Container>
   );
@@ -44,4 +47,9 @@ export const Content = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+
+export const Name = styled.Text`
+  font-size: 20px;
+  font-weight: 500;
 `;

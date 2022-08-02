@@ -6,7 +6,8 @@ import { Alert } from "react-native";
 import { RootStackParamList } from "../../../App";
 import { HCenter } from "../../components/globalStyles";
 import { MediaPicker } from "../../components/MediaPicker";
-import { cragsTable } from "../../db/models";
+import { db } from "../../db/db";
+import { cragsTable, routesTable } from "../../db/models";
 
 type FormData = {
   name: string;
@@ -48,7 +49,7 @@ export const EditCrag = () => {
         onPress={() => {
           Alert.alert(
             "Confirm delete",
-            "Are you sure you want to delete this crag?",
+            "Are you sure you want to delete this crag? This will also delete related routes!",
             [
               { text: "Cancel", style: "cancel" },
               {
@@ -56,6 +57,7 @@ export const EditCrag = () => {
                 onPress: async () => {
                   try {
                     const res = await cragsTable.delete({ id: params.id });
+                    await routesTable.delete({ cragid: params.id });
 
                     navigation.navigate("All Crags");
                   } catch (error) {

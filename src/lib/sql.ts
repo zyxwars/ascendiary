@@ -51,7 +51,7 @@ export class Database {
 
 type ColumnConstraints<Model> = { [key in keyof Model]: string };
 
-type ModelPartialWithId<Model> = Partial<ColumnConstraints<Model>> & {
+type ModelPartialWithId<Model> = Partial<Model> & {
   id?: number;
 };
 

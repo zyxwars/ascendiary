@@ -1,17 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { FlatList, TouchableOpacity } from "react-native";
+import { FlatList, ListRenderItem, TouchableOpacity } from "react-native";
 import { ThumbnailTile } from "./ThumbnailTile";
 import styled from "styled-components/native";
 
 export const TileList = ({
   data,
-  onPress,
-  imageFallback,
+  renderItem,
 }: {
   data: any;
-  onPress: (itemId: number) => void;
-  imageFallback: any;
+  renderItem: ListRenderItem<any>;
 }) => {
   return (
     <Container>
@@ -20,15 +18,7 @@ export const TileList = ({
         ListHeaderComponent={Separator}
         ListFooterComponent={Separator}
         ItemSeparatorComponent={Separator}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => onPress(item.id)}>
-            <ThumbnailTile
-              name={item.name}
-              thumbnail={item?.thumbnail}
-              fallback={imageFallback}
-            />
-          </TouchableOpacity>
-        )}
+        renderItem={renderItem}
         keyExtractor={(item) => String(item.id)}
       />
     </Container>

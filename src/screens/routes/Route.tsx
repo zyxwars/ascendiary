@@ -56,7 +56,7 @@ export const Route = () => {
             }
           >
             <Text h2>{routeData.name}</Text>
-            <Text h4>{routeData.grade}</Text>
+            <Text h4>{gradeMap.french[routeData.grade]}</Text>
           </S.HeaderBackground>
 
           <S.HeaderDivider></S.HeaderDivider>

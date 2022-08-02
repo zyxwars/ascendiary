@@ -134,7 +134,7 @@ export const AddCrag = ({
       />
       {errors.thumbnail && <Text>{errors.thumbnail.message}</Text>}
 
-      <Button size="lg" title="Add Route" onPress={handleSubmit(onSubmit)} />
+      <Button size="lg" title="Add Crag" onPress={handleSubmit(onSubmit)} />
     </HCenter>
   );
 };

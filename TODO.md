@@ -1,5 +1,7 @@
 # Primary
 
+- Grade conversion
+
 # Quick fixes:
 
 - Fix routenav typing when switching between stacks
@@ -11,6 +13,7 @@
 - Optimize select columns when getting data for menu where not all columns are required
 - Downsize thumbnail images
 - Improve crag select in add route
+- Optimize data fetching
 
 # Road map
 

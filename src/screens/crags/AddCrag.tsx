@@ -34,9 +34,14 @@ export const AddCrag = ({
   const existingCragNames = existingCrags.map((crag) => crag.name);
 
   const getCrags = async () => {
-    const res = await cragsTable.find({});
-    const data = res.rows._array;
-    setExistingCrags(data);
+    try {
+      const res = await cragsTable.find({});
+
+      setExistingCrags(res.rows._array);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
   };
 
   const {

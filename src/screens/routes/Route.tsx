@@ -8,13 +8,21 @@ import { Text, FAB } from "@rneui/themed";
 import { atom, useAtom } from "jotai";
 import React, { useCallback } from "react";
 
-import { routesModel, routesTable, withId } from "../../db/models";
+import {
+  cragsModel,
+  cragsTable,
+  routesModel,
+  routesTable,
+  withId,
+} from "../../db/models";
 import { gradeMap, routeImageFallback } from "../../constants";
 import { MainContainer, TextArea } from "../../components/globalStyles";
 import { RootStackParamList } from "../../../App";
 import * as S from "../../components/routes/styles";
 
-const routeAtom = atom<withId<routesModel> | null>(null);
+const routeAtom = atom<withId<
+  routesModel & { crag: withId<cragsModel> }
+> | null>(null);
 
 export const Route = () => {
   const route = useRoute<RouteProp<RootStackParamList, "Route">>();
@@ -30,8 +38,17 @@ export const Route = () => {
       if (res.rows.length < 1) return alert("Route not found in the database");
 
       const data = res.rows._array[0];
-      setRouteData(data);
+
+      const cragRes = await cragsTable.find({ id: data.cragid });
+
+      if (cragRes.rows.length < 1)
+        return alert("Parent crags not found in the database");
+
+      const crag = res.rows._array[0];
+
+      setRouteData({ ...data, crag });
     } catch (error) {
+      alert(error);
       console.log(error);
     }
   };
@@ -55,20 +72,22 @@ export const Route = () => {
                 : routeImageFallback
             }
           >
-            <Text h2>{routeData.name}</Text>
-            <Text h4>{gradeMap.french[routeData.grade]}</Text>
+            <Text h2>
+              {routeData.name} - {gradeMap.french[routeData.grade]}
+            </Text>
+            <Text h4>{routeData.crag.name}</Text>
           </S.HeaderBackground>
 
           <S.HeaderDivider></S.HeaderDivider>
           <MainContainer>
-            <Text h4>Media</Text>
+            {/* <Text h4>Media</Text>
             <Text h4>Notes</Text>
             <TextArea
               multiline={true}
               numberOfLines={5}
               textAlignVertical="top"
               placeholder="Route notes"
-            />
+            /> */}
           </MainContainer>
 
           <FAB
@@ -81,79 +100,6 @@ export const Route = () => {
           />
         </>
       )}
-
-      {/* <Button
-        title="Upload thumbnail"
-        onPress={async () => {
-          const cameraPermission =
-            await ImagePicker.getCameraPermissionsAsync();
-          const storagePermission = await MediaLibrary.getPermissionsAsync();
-
-          if (!cameraPermission.granted && cameraPermission.canAskAgain)
-            await ImagePicker.requestCameraPermissionsAsync();
-
-          if (!storagePermission.granted && storagePermission.canAskAgain)
-            await MediaLibrary.requestPermissionsAsync();
-
-          // TODO: test this outside of expo for all permissions
-          if (!cameraPermission.granted)
-            return setDialogData({
-              isVisible: true,
-              title: "No permission",
-              message: "Camera and media permissions needed",
-              cbTitle: "Go to settings",
-              callback: Linking.openSettings,
-            });
-
-          const res = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          });
-
-          if (res.cancelled) return;
-
-          const asset = await MediaLibrary.createAssetAsync(res.uri);
-
-          let album = await MediaLibrary.getAlbumAsync("Ascendiary");
-
-          if (!album)
-            album = await MediaLibrary.createAlbumAsync("Ascendiary", asset);
-          else await MediaLibrary.addAssetsToAlbumAsync(asset, album);
-
-          const assets = await MediaLibrary.getAssetsAsync({
-            album,
-            first: 1,
-            sortBy: MediaLibrary.SortBy.creationTime,
-          });
-
-          const movedImage = assets.assets[0];
-
-          routesTable.update({ id }, { thumbnail: movedImage.uri });
-
-          // This triggers allow to modify image
-          // https://github.com/expo/expo/issues/16694
-          await MediaLibrary.deleteAssetsAsync(asset);
-
-          // try {
-          //   // TODO: error handle this
-          //   if (!album)
-          //     await MediaLibrary.createAlbumAsync("Ascendiary", asset);
-          //   else await MediaLibrary.addAssetsToAlbumAsync(asset, album);
-
-          //   routesTable
-          //     .update({ id }, { thumbnail: asset.uri })
-          //     .catch((err) => console.log(err));
-          // } catch (error) {
-          //   setDialogData({
-          //     isVisible: true,
-          //     title: "Creation error",
-          //     message:
-          //       "Creation was cancelled, but the photo is still in storage",
-          //     cbTitle: "Delete photo",
-          //     callback: () => MediaLibrary.deleteAssetsAsync(asset),
-          //   });
-          // }
-        }}
-      /> */}
     </>
   );
 };

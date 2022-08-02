@@ -1,12 +1,10 @@
 # Primary
 
-- Crag autocomplete not showing the add button if no crags exist
-- Fix up autocomplete
-
 # Quick fixes:
 
 - Fix routenav typing when switching between stacks
 - Change fab sizes
+- Wrap every screen in scroll view
 
 # Long-term:
 

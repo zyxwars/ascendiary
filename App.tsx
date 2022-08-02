@@ -48,6 +48,7 @@ export default function App() {
             <Tab.Navigator
               sceneContainerStyle={{ paddingBottom: 78 }}
               screenOptions={({ route }) => ({
+                // tabBarHideOnKeyboard: true,
                 tabBarStyle: {
                   position: "absolute",
                   left: 16,

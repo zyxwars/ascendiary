@@ -7,7 +7,7 @@ import { EditCrag } from "./EditCrag";
 
 export type CragsStackParamList = {
   "All Crags": undefined;
-  "Add Crag": { goBackOnCreate?: boolean };
+  "Add Crag": { goBackOnCreate?: boolean; defaultValues?: Partial<cragsModel> };
   Crag: { id: number };
   "Edit Crag": withId<cragsModel>;
 };
@@ -18,7 +18,11 @@ export const CragsStackScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="All Crags" component={AllCrags} />
-      <Stack.Screen name="Add Crag" component={AddCrag} />
+      <Stack.Screen
+        name="Add Crag"
+        component={AddCrag}
+        initialParams={{ goBackOnCreate: false, defaultValues: {} }}
+      />
       <Stack.Screen name="Crag" component={Crag} />
       <Stack.Screen name="Edit Crag" component={EditCrag} />
     </Stack.Navigator>

@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
 import { RootStackParamList } from "../../../App";
-import { AutoComplete } from "../../components/AutoComplete";
+import { FindOrCreate } from "../../components/FindOrCreate";
 import { HCenter } from "../../components/globalStyles";
 import { MediaPicker } from "../../components/MediaPicker";
 import { gradeMap } from "../../constants";
@@ -23,9 +23,12 @@ type FormData = {
   thumbnail: string;
 };
 
-export const AddCrag = () => {
+export const AddCrag = ({
+  route,
+}: {
+  route: RouteProp<RootStackParamList, "Add Crag">;
+}) => {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<RootStackParamList, "Add Crag">>();
 
   const [existingCrags, setExistingCrags] = useState<withId<cragsModel>[]>([]);
   const existingCragNames = existingCrags.map((crag) => crag.name);
@@ -44,6 +47,7 @@ export const AddCrag = () => {
     defaultValues: {
       name: "",
       thumbnail: "",
+      ...route.params?.defaultValues,
     },
   });
 
@@ -71,7 +75,7 @@ export const AddCrag = () => {
 
       return () => {
         // Reset the goBackOnCreateValue so that when the route is navigated to by changing the parent stack later it isn't stuck with the value on true
-        route.params = { goBackOnCreate: false };
+        route.params = { goBackOnCreate: false, defaultValues: {} };
       };
     }, [])
   );

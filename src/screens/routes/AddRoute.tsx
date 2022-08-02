@@ -1,14 +1,15 @@
 import { Picker } from "@react-native-picker/picker";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Button, Icon, Input, Text } from "@rneui/themed";
+import { Button, Icon, Image, Input, Text } from "@rneui/themed";
 import React, { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Alert, TouchableOpacity, View } from "react-native";
-import { AutoComplete } from "../../components/AutoComplete";
+import { FindOrCreate } from "../../components/FindOrCreate";
 import { HCenter } from "../../components/globalStyles";
 import { MediaPicker, saveUriToAlbum } from "../../components/MediaPicker";
-import { gradeMap } from "../../constants";
+import { cragImageFallback, gradeMap } from "../../constants";
 import { cragsModel, cragsTable, routesTable, withId } from "../../db/models";
+import { ThumbnailTileSmall } from "../../components/Tiles/ThumbnailTileSmall";
 
 type FormData = {
   name: string;
@@ -21,7 +22,6 @@ export const AddRoute = () => {
   const navigation = useNavigation();
 
   const [existingCrags, setExistingCrags] = useState<withId<cragsModel>[]>([]);
-  const existingCragNames = existingCrags.map((crag) => crag.name);
 
   const getCrags = async () => {
     const res = await cragsTable.find({});
@@ -44,14 +44,8 @@ export const AddRoute = () => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      let cragId: number;
-
-      if (!existingCragNames.includes(data.crag)) {
-        const res = await cragsTable.create({ name: data.crag });
-
-        cragId = res.insertId as number;
-      } else
-        cragId = existingCrags.filter((crag) => crag.name === data.crag)[0].id;
+      const cragId = existingCrags.filter((crag) => crag.name === data.crag)[0]
+        .id;
 
       if (data.thumbnail !== "") await saveUriToAlbum(data.thumbnail);
 
@@ -91,7 +85,7 @@ export const AddRoute = () => {
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: "This is required.",
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
@@ -103,45 +97,51 @@ export const AddRoute = () => {
         )}
         name="name"
       />
-      {errors.name && <Text>This is required.</Text>}
+      {errors.name && <Text>{errors.name.message}</Text>}
 
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: "This is required.",
+          validate: (value) =>
+            existingCrags.filter((crag) => crag.name === value).length > 0 ||
+            "Crag doesn't exist",
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <AutoComplete
-            words={existingCragNames}
+          <FindOrCreate
+            searchExtractor={(item) => item.name}
             value={value}
             onChange={onChange}
-            onBlur={onBlur}
-            inputProps={{ placeholder: "Crag" }}
-            footerComponent={
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Crags", {
-                    screen: "Add Crag",
-                    params: {
-                      goBackOnCreate: true,
-                    },
-                    initial: false,
-                  });
-                }}
-              >
-                <Icon name="plus" type="entypo" />
-              </TouchableOpacity>
+            data={existingCrags}
+            renderItem={({ item }) => (
+              <ThumbnailTileSmall
+                name={item.name}
+                fallback={cragImageFallback}
+                thumbnail={item?.thumbnail}
+              />
+            )}
+            onPressAdd={() =>
+              navigation.navigate("Crags", {
+                screen: "Add Crag",
+                params: {
+                  goBackOnCreate: true,
+                  defaultValues: { name: value },
+                },
+                // Load the initial route in the stack before the navigated page, to have a page to go back to
+                initial: false,
+              })
             }
+            inputProps={{ placeholder: "Crag" }}
           />
         )}
         name="crag"
       />
-      {errors.crag && <Text>This is required.</Text>}
+      {errors.crag && <Text>{errors.crag.message}</Text>}
 
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: "This is required.",
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <>
@@ -160,7 +160,7 @@ export const AddRoute = () => {
         )}
         name="grade"
       />
-      {errors.grade && <Text>This is required.</Text>}
+      {errors.grade && <Text>{errors.grade.message}</Text>}
 
       <Controller
         control={control}
